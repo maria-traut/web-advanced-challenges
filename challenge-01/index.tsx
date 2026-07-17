@@ -49,6 +49,7 @@ function whoIsOnline (users: IUser[]) {
 
 console.log(whoIsOnline(users));
 
+
 /* output IST
 [
   {
