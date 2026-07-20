@@ -6,10 +6,11 @@ Objective: Build a basic to-do list with the ability to:
 Add tasks
 Mark them as done
 Remove tasks
-HTML
+
+# HTML
+
 <input id="todoInput" placeholder="New task" />
 <button id="addTodo">Add</button>
-
 <ul id="todoList"></ul>
 
 # Task
