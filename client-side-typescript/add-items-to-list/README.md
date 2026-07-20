@@ -10,4 +10,4 @@ Objective: Dynamically add list items based on input.
 
 # Task
 
-Add input text as a new <li> to the list each time the button is clicked.
+Add input text as a new `html <li>` to the list each time the button is clicked.
