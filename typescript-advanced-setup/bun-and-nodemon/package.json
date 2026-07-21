@@ -1,0 +1,13 @@
+{
+  "name": "typescript-advanced-setup",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "nodemon": "^3.1.14"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
