@@ -1,4 +1,4 @@
-# typescript-advanced-setup
+# bun-and-nodemon-2
 
 To install dependencies:
 

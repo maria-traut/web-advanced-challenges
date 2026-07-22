@@ -1,20 +1,19 @@
 {
-  "name": "typescript-advanced-setup",
+  "name": "nodemon-and-tsx",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon"
-  },
-  "keywords": [],
-  "author": "",
   "license": "ISC",
-  "type": "module",
+  "author": "",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "build:watch": "tsc --watch",
+    "start:dev": "nodemon dist/main.js",
+    "dev": "concurrently \"npm run build:watch\" \"npm run start:dev\""
+  },
   "devDependencies": {
-    "@types/node": "^26.1.1",
-    "nodemon": "^3.1.14",
-    "tsx": "^4.23.1",
-    "typescript": "^7.0.2"
+    "concurrently": "^8.2.2",
+    "nodemon": "^3.0.1",
+    "tsx": "^4.23.1"
   }
 }

@@ -1,4 +1,4 @@
-import marvelData from "./superheroes.json" with { type: "json" };
+import marvelData from "./superheroes.json";
 function logSuperheroCount(data) {
     const count = data.superheroes.length;
     console.log(`--- Marvel Data Summary ---`);
