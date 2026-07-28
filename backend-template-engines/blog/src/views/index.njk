@@ -1,0 +1,13 @@
+{% extends "_base.njk" %} {% block title %}My Clean Blog{% endblock %}
+{% block content %}
+{% for post in content %}
+<div class="post-preview">
+    <a href="post.html"></a>
+<h2 class="post-title">{{post.title}}</h2>
+<h3 class="post-subtitle">{{post.teaser}}</h3>
+</a>
+<p class="post-meta">Posted by {{post.author}} ({{post.createdAt}})</p>
+</div>
+<hr class="my-4" />
+{% endfor %}
+{% endblock %}
