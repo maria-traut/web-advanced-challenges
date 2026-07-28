@@ -1,0 +1,7 @@
+{% extends "_base.njk" %}
+{% import "macros/events.njk" as eventMacros %}
+{% block content %}
+  {% for event in events %}
+    {{ eventMacros.eventCard(event.name, event.date, event.location, event.soldOut) }}
+  {% endfor %}
+{% endblock %}
