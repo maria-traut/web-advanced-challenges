@@ -7,3 +7,9 @@ export function getAllBookmarks(): Bookmark[] {
 export function getBookMarkById(id: number): Bookmark | null {
   return bookmarks.find((bookmark) => bookmark.id === id) || null;
 }
+
+let nextId = 1;
+
+export function getNewBookmarkId(): number {
+  return nextId++;
+}
