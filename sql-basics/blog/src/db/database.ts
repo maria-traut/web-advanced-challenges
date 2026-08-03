@@ -12,6 +12,18 @@ export async function connectDB(): Promise<Database> {
     driver: sqlite3.Database,
   });
 
+  await db.run(`
+    CREATE TABLE IF NOT EXISTS blog_entries (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      teaser TEXT NOT NULL,
+      author TEXT NOT NULL,
+      createdAt TEXT NOT NULL,
+      image TEXT NOT NULL,
+      content TEXT NOT NULL
+    )
+  `);
+
   return db;
 }
 
