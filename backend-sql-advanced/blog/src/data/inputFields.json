@@ -1,0 +1,14 @@
+[
+  { "label": "name", "placeholder": "Enter your name...", "type": "text" },
+  { "label": "email", "placeholder": "Enter your email...", "type": "email" },
+  {
+    "label": "phone",
+    "placeholder": "Enter your phone number...",
+    "type": "tel"
+  },
+  {
+    "label": "message",
+    "placeholder": "Enter your message here...",
+    "type": "textarea"
+  }
+]
