@@ -12,14 +12,13 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "skipLibCheck": true,
-    
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true
-
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "src/app.ts"],
   "exclude": ["node_modules"]
 }
