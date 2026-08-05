@@ -1,9 +1,21 @@
 import express from "express";
 import nunjucks from "nunjucks";
 import postRoutes from "./routes/postRoutes";
-import { projectRoot, assetsDir, cssDir } from "./models/postModel";
+
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const app = express();
+
+// filrURLToPath converts ULR to file path
+// import.meta.url contains URL of current file
+const __filename = fileURLToPath(import.meta.url);
+
+// path.dirname cuts file name and returns folder
+const __dirname = path.dirname(__filename);
+const projectRoot = path.resolve(__dirname, "..");
+const assetsDir = path.join(projectRoot, "src", "assets");
+const cssDir = path.join(projectRoot, "src", "css");
 
 app.use(postRoutes);
 
