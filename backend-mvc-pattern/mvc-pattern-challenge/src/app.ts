@@ -16,12 +16,13 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 const assetsDir = path.join(projectRoot, "src", "assets");
 const cssDir = path.join(projectRoot, "src", "css");
+console.log(cssDir);
+app.use("/assets", express.static(assetsDir));
+app.use("/css", express.static(cssDir));
 
 app.use(postRoutes);
 
 nunjucks.configure(projectRoot, { autoescape: true, express: app });
-app.use("/assets", express.static(assetsDir));
-app.use("/css", express.static(cssDir));
 
 const port = Number(process.env.PORT) || 3000;
 
