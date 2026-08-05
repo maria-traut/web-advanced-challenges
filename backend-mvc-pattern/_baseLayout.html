@@ -27,7 +27,7 @@
       type="text/css"
     />
     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="/css/styles.css" rel="stylesheet" />
+    <link href="mvc-pattern-challenge/src/css/styles.css" rel="stylesheet" />
   </head>
   <body>
     <!-- Navigation-->
@@ -70,21 +70,21 @@
     </nav>
     <!-- Page Header-->
     {% block page_header %}
-      <header
-        class="masthead"
-        style='background-image: url("/assets/img/home-bg.jpg")'
-      >
-        <div class="container position-relative px-4 px-lg-5">
-          <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-              <div class="site-heading">
-                <h1>Clean Blog</h1>
-                <span class="subheading">A Blog Theme by Start Bootstrap</span>
-              </div>
+    <header
+      class="masthead"
+      style="background-image: url(&quot;/assets/img/home-bg.jpg&quot;)"
+    >
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h1>Clean Blog</h1>
+              <span class="subheading">A Blog Theme by Start Bootstrap</span>
             </div>
           </div>
         </div>
-      </header>
+      </div>
+    </header>
     {% endblock page_header %}
     <!-- Main Content-->
     {% block main_content %}{% endblock %}
