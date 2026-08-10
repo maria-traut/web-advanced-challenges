@@ -90,6 +90,7 @@ console.log(bookReservation2.status);
 // Challenge 3: Book Library Notification System
 // ---------------------------------------------
 
+/*
 interface Notifiable {
   notify(memberId: string, event: string, title: string): void; // sends a notification to a member
   getChannelName(): string; // returns the name of the channel (e.g. "email")
@@ -113,3 +114,4 @@ class EmailNotifier extends BaseNotifier {
 class SmsNotifier extends BaseNotifier {
   `${memberId}: ${message}`
 }
+  */
