@@ -1,4 +1,6 @@
-// challenge 1
+// ---------------------------------------------------------
+// Challenge 1: Functional transformation in a service layer
+// ---------------------------------------------------------
 type Book = {
   id: number;
   title: string;
@@ -42,7 +44,9 @@ const filteredBooks = books
 
 console.log(filteredBooks);
 
-// challenge 2
+// --------------------------------------
+// Challenge 2: Book Library Reservations
+// --------------------------------------
 class BookReservation {
   memberName: string;
   bookTitle: string;
@@ -81,3 +85,31 @@ bookReservation2.markReturned();
 // bookReservation2.cancel(); --> Error Testing
 console.log(bookReservation1.status);
 console.log(bookReservation2.status);
+
+// ---------------------------------------------
+// Challenge 3: Book Library Notification System
+// ---------------------------------------------
+
+interface Notifiable {
+  notify(memberId: string, event: string, title: string): void; // sends a notification to a member
+  getChannelName(): string; // returns the name of the channel (e.g. "email")
+}
+
+abstract class BaseNotifier implements Notifiable {
+  formatMessage(event: "reservation" | "overdue", title: string): string; // concrete method that returns a full message string, e.g. "Reminder: 'Dune' is overdue." or "Your reservation for 'Dune' is confirmed."
+  send(memberId: string, message: string): void;
+  notify(
+    memberId: string,
+    event: "reservation" | "overdue",
+    title: string,
+  ): void;
+}
+
+class EmailNotifier extends BaseNotifier {
+ `${memberId}: ${message}`
+}
+
+
+class SmsNotifier extends BaseNotifier {
+  `${memberId}: ${message}`
+}
