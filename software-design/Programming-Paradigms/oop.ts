@@ -83,35 +83,91 @@ bookReservation1.markReturned();
 // bookReservation1.markReturned(); --> Error Testing
 bookReservation2.markReturned();
 // bookReservation2.cancel(); --> Error Testing
-console.log(bookReservation1.status);
-console.log(bookReservation2.status);
+console.log(bookReservation1.status); // Output: "returned"
+console.log(bookReservation2.status); // Output: "returned"
 
 // ---------------------------------------------
 // Challenge 3: Book Library Notification System
 // ---------------------------------------------
 
-/*
+// The Notifiable interface must declare:
+
 interface Notifiable {
+  // interface = contract (list of promises; every class that uses Notifiable, must use the two declared methods.)
   notify(memberId: string, event: string, title: string): void; // sends a notification to a member
   getChannelName(): string; // returns the name of the channel (e.g. "email")
 }
 
+// The BaseNotifier abstract class must implement Notifiable and provide ...
 abstract class BaseNotifier implements Notifiable {
-  formatMessage(event: "reservation" | "overdue", title: string): string; // concrete method that returns a full message string, e.g. "Reminder: 'Dune' is overdue." or "Your reservation for 'Dune' is confirmed."
-  send(memberId: string, message: string): void;
+  formatMessage(event: "reservation" | "overdue", title: string): string {
+    if (event === "overdue") {
+      return `Reminder: '${title}' is overdue.`;
+    } else {
+      return `Your reservation for '${title}' is confirmed.`;
+    }
+  }
+  abstract send(memberId: string, message: string): void;
+  abstract getChannelName(): string;
+
   notify(
     memberId: string,
     event: "reservation" | "overdue",
     title: string,
-  ): void;
+  ): void {
+    const message = this.formatMessage(event, title);
+    this.send(memberId, message);
+  }
 }
 
+// Two concrete classes extending BaseNotifier ...
 class EmailNotifier extends BaseNotifier {
- `${memberId}: ${message}`
+  send(memberId: string, message: string): void {
+    console.log(`Sending email to member #${memberId}: ${message}`);
+  }
+  getChannelName(): string {
+    return `email`;
+  }
 }
-
 
 class SmsNotifier extends BaseNotifier {
-  `${memberId}: ${message}`
+  send(memberId: string, message: string): void {
+    console.log(`Sending SMS to member #${memberId}: ${message}`);
+  }
+  getChannelName(): string {
+    return `sms`;
+  }
 }
-  */
+
+// A NotificationService class that ...
+class NotificationService {
+  channels: Notifiable[];
+
+  constructor(channels: Notifiable[]) {
+    this.channels = channels;
+  }
+
+  dispatch(
+    memberId: string,
+    event: "reservation" | "overdue",
+    title: string,
+  ): void {
+    this.channels.forEach((channel) => {
+      channel.notify(memberId, event, title);
+    });
+  }
+}
+
+// emailNotifier = Instanz (Object, das ich mit new ... erzeuge); EmailNotifier = Klasse
+const emailNotifier = new EmailNotifier();
+const smsNotifier = new SmsNotifier();
+
+const notificationService = new NotificationService([
+  emailNotifier,
+  smsNotifier,
+]);
+
+notificationService.dispatch("42", "reservation", "Dune");
+// Output:
+// "Sending email to member #42: Your reservation for 'Dune' is confirmed."
+// "Sending SMS to member #42: Your reservation for 'Dune' is confirmed."
