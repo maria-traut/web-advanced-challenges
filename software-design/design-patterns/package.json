@@ -1,0 +1,13 @@
+{
+  "name": "design-patterns",
+  "version": "1.0.0",
+  "description": "These exercises test your ability to apply design patterns in realistic scenarios. The first three ask you to design a solution from scratch. The last one gives you existing, tightly coupled code that you should refactor using the concepts from this session.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
