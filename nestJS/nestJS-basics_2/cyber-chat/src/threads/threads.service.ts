@@ -1,7 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { ThreadsRepository } from "./threads.repository";
-import type { Thread } from "./entities/thread.type";
-import type { Comment } from "../comments/entities/comment.type";
+import type { Thread, Comment } from "../types";
 import { CommentsRepository } from "../comments/comments.repository";
 
 @Injectable()
@@ -11,7 +10,7 @@ export class ThreadsService {
     private readonly commentsRepository: CommentsRepository,
   ) {}
 
-  // create a thread with title and body
+  // Create a thread with title and body (and author)
   addNewThread(title: string, author: string, body: string): Thread {
     if (!title || title.trim().length < 2) {
       throw new Error("Title must be at least 2 characters.");
@@ -19,12 +18,12 @@ export class ThreadsService {
     return this.threadsRepository.create({ title, author, body });
   }
 
-  // list all threads
+  // List all threads
   getAllThreads(): Thread[] {
     return this.threadsRepository.findAll();
   }
 
-  // get one thread including its comments
+  // Get one thread including its comments
   getThreadByIdIncludingComments(
     id: number,
   ): (Thread & { comments: Comment[] }) | undefined {
@@ -34,7 +33,7 @@ export class ThreadsService {
     return { ...thread, comments };
   }
 
-  // delete thread and all of its comments
+  // Delete thread and all of its comments
   deleteThreadIncludingComments(threadId: number): boolean {
     // 1. get array of comments belonging to specific thread
     const commentsToDelete = this.commentsRepository.findByThreadId(threadId);

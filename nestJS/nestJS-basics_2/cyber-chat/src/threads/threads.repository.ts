@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { initialThreads } from "../data";
-import type { Thread } from "./entities/thread.type";
+import type { Thread } from "../types";
 
 @Injectable()
 export class ThreadsRepository {
@@ -16,19 +16,23 @@ export class ThreadsRepository {
     return this.threads.get(id);
   }
 
-  create(newThread: Omit<Thread, "id">): Thread {
+  create(newThread: Omit<Thread, "id" | "createdAt">): Thread {
     const threadId = Date.now();
-    const thread: Thread = { id: threadId, ...newThread };
+    const thread: Thread = {
+      id: threadId,
+      createdAt: new Date(),
+      ...newThread,
+    };
     this.threads.set(threadId, thread);
     return thread;
   }
 
-  update(id: number, data): Thread | undefined {
+  update(id: number, data: Partial<Omit<Thread, "id">>): Thread | undefined {
     const threadToBeUpdated = this.threads.get(id);
     if (!threadToBeUpdated) return undefined;
 
     const updatedThread = { ...threadToBeUpdated, ...data };
-    this.threads.set(id, threadToBeUpdated);
+    this.threads.set(id, updatedThread);
     return updatedThread;
   }
 

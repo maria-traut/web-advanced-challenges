@@ -9,8 +9,7 @@ import {
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
-import type { Thread } from "./entities/thread.type";
-import type { Comment } from "../comments/entities/comment.type";
+import type { Thread, Comment } from "../types";
 
 @Controller("threads")
 export class ThreadsController {
@@ -19,7 +18,7 @@ export class ThreadsController {
     private readonly commentsService: CommentsService,
   ) {}
 
-  // GET	/threads	List all threads
+  // GET    /threads   List all threads
   @Get()
   listAllThreads(): Thread[] {
     return this.threadsService.getAllThreads();
@@ -60,9 +59,9 @@ export class ThreadsController {
     );
   }
 
-  // DELETE	/threads/:id/	Deletes the thread and all of its comments (comments are actually deleted)
+  // DELETE     /threads/:id/   Deletes the thread and all of its comments (comments are actually deleted)
   @Delete(":id")
-  remove(@Param("id") id: string): { message: string } {
+  removeThread(@Param("id") id: string): { message: string } {
     const deleted = this.threadsService.deleteThreadIncludingComments(
       Number(id),
     );
