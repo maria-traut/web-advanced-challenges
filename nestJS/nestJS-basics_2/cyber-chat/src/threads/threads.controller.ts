@@ -8,12 +8,16 @@ import {
   Delete,
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
+import { CommentsService } from "../comments/comments.service";
 import type { Thread } from "./entities/thread.type";
 import type { Comment } from "../comments/entities/comment.type";
 
 @Controller("threads")
 export class ThreadsController {
-  constructor(private readonly threadsService: ThreadsService) {}
+  constructor(
+    private readonly threadsService: ThreadsService,
+    private readonly commentsService: CommentsService,
+  ) {}
 
   // POST	/threads	Create a thread with title and body
   @Post()
@@ -47,7 +51,7 @@ export class ThreadsController {
     @Param("id") id: string,
     @Body() body: { author: string; body: string },
   ): Comment {
-    return this.threadsService.addNewComment(
+    return this.commentsService.addNewComment(
       Number(id),
       body.author,
       body.body,
