@@ -1,5 +1,4 @@
-import type { Thread } from "./threads/entities/thread.type";
-import type { Comment } from "./comments/entities/comment.type";
+import type { Thread, Comment } from "./types";
 
 export const initialThreads: Thread[] = [
   {
@@ -73,6 +72,20 @@ export const initialComments: Comment[] = [
     threadId: 5,
     author: "fifth author",
     body: "fifth body",
+    createdAt: new Date(),
+  },
+  {
+    id: 6,
+    threadId: 1786992517821,
+    author: "sixth author",
+    body: "sixth body",
+    createdAt: new Date(),
+  },
+  {
+    id: 7,
+    threadId: 1786992517821,
+    author: "seventh author",
+    body: "seventh body",
     createdAt: new Date(),
   },
 ];
