@@ -1,30 +1,12 @@
 import { Injectable } from "@nestjs/common";
+import { initialThreads } from "../data";
 import type { Thread } from "./entities/thread.type";
 
 @Injectable()
 export class ThreadsRepository {
-  private threads = new Map<number, Thread>([
-    [
-      1,
-      {
-        id: 1,
-        title: "first thread",
-        author: "first author",
-        body: "first body",
-        createdAt: new Date(),
-      },
-    ],
-    [
-      2,
-      {
-        id: 2,
-        title: "second thread",
-        author: "second author",
-        body: "second body",
-        createdAt: new Date(),
-      },
-    ],
-  ]);
+  private threads = new Map<number, Thread>(
+    initialThreads.map((thread) => [thread.id, thread]),
+  );
 
   findAll(): Thread[] {
     return [...this.threads.values()];
@@ -34,9 +16,9 @@ export class ThreadsRepository {
     return this.threads.get(id);
   }
 
-  create(data): Thread {
+  create(newThread: Omit<Thread, "id">): Thread {
     const threadId = Date.now();
-    const thread: Thread = { id: threadId, ...data };
+    const thread: Thread = { id: threadId, ...newThread };
     this.threads.set(threadId, thread);
     return thread;
   }
