@@ -12,11 +12,11 @@ export class ThreadsService {
   ) {}
 
   // create a thread with title and body
-  addNewThread(title: string, body: string): Thread {
+  addNewThread(title: string, author: string, body: string): Thread {
     if (!title || title.trim().length < 2) {
       throw new Error("Title must be at least 2 characters.");
     }
-    return this.threadsRepository.create({ title, body });
+    return this.threadsRepository.create({ title, author, body });
   }
 
   // list all threads

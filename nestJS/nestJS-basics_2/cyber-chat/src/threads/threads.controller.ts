@@ -19,12 +19,6 @@ export class ThreadsController {
     private readonly commentsService: CommentsService,
   ) {}
 
-  // POST	/threads	Create a thread with title and body
-  @Post()
-  createThread(@Body() body: { title: string; body: string }): Thread {
-    return this.threadsService.addNewThread(body.title, body.body);
-  }
-
   // GET	/threads	List all threads
   @Get()
   listAllThreads(): Thread[] {
@@ -43,6 +37,14 @@ export class ThreadsController {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
     return thread;
+  }
+
+  // POST	/threads	Create a thread with title and body
+  @Post()
+  createThread(
+    @Body() body: { title: string; author: string; body: string },
+  ): Thread {
+    return this.threadsService.addNewThread(body.title, body.author, body.body);
   }
 
   // POST	/threads/:id/comments	Add a comment to a thread

@@ -1,41 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import type { Comment } from "./entities/comment.type";
+import { initialComments } from "../data";
 
 @Injectable()
 export class CommentsRepository {
-  private comments = new Map<number, Comment>([
-    [
-      1,
-      {
-        id: 1,
-        threadId: 1,
-        author: "first author",
-        body: "first body",
-        createdAt: new Date(),
-      },
-    ],
-    [
-      2,
-      {
-        id: 2,
-        threadId: 2,
-        author: "second author",
-        body: "second body",
-        createdAt: new Date(),
-      },
-    ],
-  ]);
+  private initialComments = new Map<number, Comment>(
+    initialComments.map((comment) => [comment.id, comment]),
+  );
 
   findAll(): Comment[] {
-    return [...this.comments.values()];
+    return [...this.initialComments.values()];
   }
 
   findById(id: number): Comment | undefined {
-    return this.comments.get(id);
+    return this.initialComments.get(id);
   }
 
   findByThreadId(threadId: number): Comment[] {
-    return [...this.comments.values()].filter(
+    return [...this.initialComments.values()].filter(
       (comment) => comment.threadId === threadId,
     );
   }
@@ -43,19 +25,19 @@ export class CommentsRepository {
   create(data): Comment {
     const commentId = Date.now();
     const newComment: Comment = { id: commentId, ...data };
-    this.comments.set(commentId, newComment);
+    this.initialComments.set(commentId, newComment);
     return newComment;
   }
 
   delete(key: number): boolean {
-    return this.comments.delete(key);
+    return this.initialComments.delete(key);
   }
 
   softDelete(key: number): Comment | undefined {
-    const commentToUpdate = this.comments.get(key);
+    const commentToUpdate = this.initialComments.get(key);
     if (!commentToUpdate) return undefined;
     const commentWithDeletedBody = { ...commentToUpdate, body: "deleted" };
-    this.comments.set(key, commentWithDeletedBody);
+    this.initialComments.set(key, commentWithDeletedBody);
     return commentWithDeletedBody;
   }
 }
