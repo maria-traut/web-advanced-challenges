@@ -34,6 +34,12 @@ export class CommentsRepository {
     return this.comments.get(id);
   }
 
+  findByThreadId(threadId: number): Comment[] {
+    return [...this.comments.values()].filter(
+      (comment) => comment.threadId === threadId,
+    );
+  }
+
   create(data): Comment {
     const commentId = Date.now();
     const newComment: Comment = { id: commentId, ...data };
@@ -41,13 +47,15 @@ export class CommentsRepository {
     return newComment;
   }
 
-  findByThreadId(threadId: number): Comment[] {
-    return [...this.comments.values()].filter(
-      (comment) => comment.threadId === threadId,
-    );
-  }
-
   delete(key: number): boolean {
     return this.comments.delete(key);
+  }
+
+  softDelete(key: number): Comment | undefined {
+    const commentToUpdate = this.comments.get(key);
+    if (!commentToUpdate) return undefined;
+    const commentWithDeletedBody = { ...commentToUpdate, body: "deleted" };
+    this.comments.set(key, commentWithDeletedBody);
+    return commentWithDeletedBody;
   }
 }
