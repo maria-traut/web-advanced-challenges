@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { ThreadsRepository } from "./threads.repository";
+
 import type { Thread, Comment } from "../types";
 import { CommentsRepository } from "../comments/comments.repository";
 
