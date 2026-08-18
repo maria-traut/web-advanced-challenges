@@ -12,7 +12,6 @@ import { Comment } from "./entities/comment.entity";
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  // GET	/comments/:id/	Get one comment
   @Get(":id")
   showComment(@Param("id") id: string): Promise<Comment | null> {
     const comment = this.commentsService.getCommentById(id);
@@ -22,7 +21,6 @@ export class CommentsController {
     return comment;
   }
 
-  // DELETE	/comments/:id/	Special: Does not delete the comment, but sets its body to “deleted”
   @Delete(":id")
   removeComment(@Param("id") id: string): { message: string } {
     const deleted = this.commentsService.softDeleteComment(id);

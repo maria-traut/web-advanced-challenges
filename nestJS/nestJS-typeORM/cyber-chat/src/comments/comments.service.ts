@@ -14,7 +14,6 @@ export class CommentsService {
     return this.comments.findOneBy({ id });
   }
 
-  // Create a comment in one thread
   async addNewComment(
     threadId: string,
     author: string,
@@ -28,7 +27,6 @@ export class CommentsService {
     return this.comments.save(newComment);
   }
 
-  // Sets the comments body to “deleted”, does not delete it
   async softDeleteComment(id: string): Promise<Comment | null> {
     const comment = await this.comments.findOneBy({ id });
     if (!comment) {
