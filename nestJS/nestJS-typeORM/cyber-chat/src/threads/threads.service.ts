@@ -22,8 +22,8 @@ export class ThreadsService {
   }
 
   // List all threads
-  getAllThreads(): Thread[] {
-    return this.threadsRepository.findAll();
+  async getAllThreads(): Promise<Thread[]> {
+    return this.threads.find();
   }
 
   // Get one thread including its comments
