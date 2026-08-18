@@ -1,47 +1,54 @@
-import { Injectable } from "@nestjs/common";
-import { ThreadsRepository } from "./threads.repository";
-import type { Thread, Comment } from "../types";
-import { CommentsRepository } from "../comments/comments.repository";
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Thread } from "./entities/thread.entity";
+import { Comment } from "../comments/entities/comment.entity";
 
 @Injectable()
 export class ThreadsService {
   constructor(
-    private readonly threadsRepository: ThreadsRepository,
-    private readonly commentsRepository: CommentsRepository,
+    @InjectRepository(Thread)
+    private readonly threads: Repository<Thread>,
+    @InjectRepository(Comment)
+    private readonly comments: Repository<Comment>,
   ) {}
 
-  // Create a thread with title and body (and author)
-  addNewThread(title: string, author: string, body: string): Thread {
+  async addNewThread(
+    title: string,
+    author: string,
+    body: string,
+  ): Promise<Thread> {
     if (!title || title.trim().length < 2) {
-      throw new Error("Title must be at least 2 characters.");
+      throw new Error("Title must be at least 2 characters");
     }
-    return this.threadsRepository.create({ title, author, body });
+    const newThread = this.threads.create({ title, author, body });
+    return this.threads.save(newThread);
   }
 
-  // List all threads
-  getAllThreads(): Thread[] {
-    return this.threadsRepository.findAll();
+  async getAllThreads(): Promise<Thread[]> {
+    return this.threads.find();
   }
 
-  // Get one thread including its comments
-  getThreadByIdIncludingComments(
-    id: number,
-  ): (Thread & { comments: Comment[] }) | undefined {
-    const thread = this.threadsRepository.findById(id);
-    if (!thread) return undefined;
-    const comments = this.commentsRepository.findByThreadId(id);
+  async getThreadByIdIncludingComments(
+    id: string,
+  ): Promise<Thread & { comments: Comment[] }> {
+    const thread = await this.threads.findOneBy({ id });
+    if (!thread) {
+      throw new NotFoundException(`Thread with ID ${id} not found.`);
+    }
+    const comments = await this.comments.find({ where: { thread: { id } } });
     return { ...thread, comments };
   }
 
-  // Delete thread and all of its comments
-  deleteThreadIncludingComments(threadId: number): boolean {
-    // 1. get array of comments belonging to specific thread
-    const commentsToDelete = this.commentsRepository.findByThreadId(threadId);
-    // 2. delete every comment belonging to specific thread
-    commentsToDelete.forEach((comment) =>
-      this.commentsRepository.delete(comment.id),
-    );
-    // 3. delete specific thread itself
-    return this.threadsRepository.delete(threadId);
+  async deleteThreadIncludingComments(threadId: string): Promise<void> {
+    const comments = await this.comments.find({
+      where: {
+        thread: {
+          id: threadId,
+        },
+      },
+    });
+    await this.comments.remove(comments);
+    await this.threads.delete(threadId);
   }
 }

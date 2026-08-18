@@ -1,23 +1,38 @@
 import { Injectable } from "@nestjs/common";
-import { CommentsRepository } from "./comments.repository";
-import type { Comment } from "../types";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Comment } from "./entities/comment.entity";
 
 @Injectable()
 export class CommentsService {
-  constructor(private readonly commentsRepository: CommentsRepository) {}
+  constructor(
+    @InjectRepository(Comment) private readonly comments: Repository<Comment>,
+  ) {}
 
   // Get one comment
-  getCommentById(id: number): Comment | undefined {
-    return this.commentsRepository.findById(id);
+  async getCommentById(id: string): Promise<Comment | null> {
+    return this.comments.findOneBy({ id });
   }
 
-  // Create a comment in one thread
-  addNewComment(threadId: number, author: string, body: string): Comment {
-    return this.commentsRepository.create({ threadId, author, body });
+  async addNewComment(
+    threadId: string,
+    author: string,
+    body: string,
+  ): Promise<Comment> {
+    const newComment = this.comments.create({
+      author,
+      body,
+      thread: { id: threadId },
+    });
+    return this.comments.save(newComment);
   }
 
-  // Sets the comments body to “deleted”, does not delete it
-  softDeleteComment(id: number): Comment | undefined {
-    return this.commentsRepository.softDelete(id);
+  async softDeleteComment(id: string): Promise<Comment | null> {
+    const comment = await this.comments.findOneBy({ id });
+    if (!comment) {
+      return null;
+    }
+    comment.body = "deleted";
+    return this.comments.save(comment);
   }
 }
