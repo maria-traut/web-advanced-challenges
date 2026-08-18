@@ -1,13 +1,16 @@
 import { Injectable } from "@nestjs/common";
-
-import type { Thread, Comment } from "../types";
-import { CommentsRepository } from "../comments/comments.repository";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Thread } from "./entities/thread.entity";
+import { Comment } from "../comments/entities/comment.entity";
 
 @Injectable()
 export class ThreadsService {
   constructor(
-    private readonly threadsRepository: ThreadsRepository,
-    private readonly commentsRepository: CommentsRepository,
+    @InjectRepository(Thread)
+    private readonly threads: Repository<Thread>,
+    @InjectRepository(Comment)
+    private readonly comments: Repository<Comment>,
   ) {}
 
   // Create a thread with title and body (and author)
