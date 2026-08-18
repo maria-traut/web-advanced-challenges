@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Thread } from "./entities/thread.entity";
@@ -34,12 +34,14 @@ export class ThreadsService {
   }
 
   // Get one thread including its comments
-  getThreadByIdIncludingComments(
-    id: number,
-  ): (Thread & { comments: Comment[] }) | undefined {
-    const thread = this.threadsRepository.findById(id);
-    if (!thread) return undefined;
-    const comments = this.commentsRepository.findByThreadId(id);
+  async getThreadByIdIncludingComments(
+    id: string,
+  ): Promise<Thread & { comments: Comment[] }> {
+    const thread = await this.threads.findOneBy({ id });
+    if (!thread) {
+      throw new NotFoundException(`Thread with ID ${id} not found.`);
+    }
+    const comments = await this.comments.find({ where: { thread: { id } } });
     return { ...thread, comments };
   }
 
