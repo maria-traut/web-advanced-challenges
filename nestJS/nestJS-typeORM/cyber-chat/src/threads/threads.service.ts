@@ -14,11 +14,18 @@ export class ThreadsService {
   ) {}
 
   // Create a thread with title and body (and author)
-  addNewThread(title: string, author: string, body: string): Thread {
+  async addNewThread(
+    title: string,
+    author: string,
+    body: string,
+  ): Promise<Thread> {
     if (!title || title.trim().length < 2) {
-      throw new Error("Title must be at least 2 characters.");
+      throw new Error("Title must be at least 2 characters");
     }
-    return this.threadsRepository.create({ title, author, body });
+    // 1. Synchronous (Local): Builds the entity instance in memory
+    const newThread = this.threads.create({ title, author, body });
+    // 2. Asynchronous (API): Executes the INSERT statement via TypeORM
+    return this.threads.save(newThread);
   }
 
   // List all threads
