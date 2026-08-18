@@ -6,7 +6,7 @@ import {
   Delete,
 } from "@nestjs/common";
 import { CommentsService } from "./comments.service";
-import type { Comment } from "../types";
+import { Comment } from "./entities/comment.entity";
 
 @Controller("comments")
 export class CommentsController {
@@ -14,8 +14,8 @@ export class CommentsController {
 
   // GET	/comments/:id/	Get one comment
   @Get(":id")
-  showComment(@Param("id") id: string): Comment {
-    const comment = this.commentsService.getCommentById(Number(id));
+  showComment(@Param("id") id: string): Promise<Comment | null> {
+    const comment = this.commentsService.getCommentById(id);
     if (!comment) {
       throw new NotFoundException(`Comment with ID "${id}" not found.`);
     }
@@ -25,7 +25,7 @@ export class CommentsController {
   // DELETE	/comments/:id/	Special: Does not delete the comment, but sets its body to “deleted”
   @Delete(":id")
   removeComment(@Param("id") id: string): { message: string } {
-    const deleted = this.commentsService.softDeleteComment(Number(id));
+    const deleted = this.commentsService.softDeleteComment(id);
     if (!deleted) {
       throw new NotFoundException(`Comment with ID "${id}" not found.`);
     }

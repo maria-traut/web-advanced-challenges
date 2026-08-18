@@ -9,7 +9,8 @@ import {
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
-import type { Thread, Comment } from "../types";
+import { Thread } from "./entities/thread.entity";
+import { Comment } from "../comments/entities/comment.entity";
 
 @Controller("threads")
 export class ThreadsController {
@@ -20,7 +21,7 @@ export class ThreadsController {
 
   // GET    /threads   List all threads
   @Get()
-  listAllThreads(): Thread[] {
+  listAllThreads(): Promise<Thread[]> {
     return this.threadsService.getAllThreads();
   }
 
@@ -28,10 +29,8 @@ export class ThreadsController {
   @Get(":id")
   showThreadIncludingComments(
     @Param("id") id: string,
-  ): Thread & { comments: Comment[] } {
-    const thread = this.threadsService.getThreadByIdIncludingComments(
-      Number(id),
-    );
+  ): Promise<Thread & { comments: Comment[] }> {
+    const thread = this.threadsService.getThreadByIdIncludingComments(id);
     if (!thread) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
@@ -42,7 +41,7 @@ export class ThreadsController {
   @Post()
   createThread(
     @Body() body: { title: string; author: string; body: string },
-  ): Thread {
+  ): Promise<Thread> {
     return this.threadsService.addNewThread(body.title, body.author, body.body);
   }
 
@@ -51,20 +50,14 @@ export class ThreadsController {
   createNewPost(
     @Param("id") id: string,
     @Body() body: { author: string; body: string },
-  ): Comment {
-    return this.commentsService.addNewComment(
-      Number(id),
-      body.author,
-      body.body,
-    );
+  ): Promise<Comment> {
+    return this.commentsService.addNewComment(id, body.author, body.body);
   }
 
   // DELETE     /threads/:id/   Deletes the thread and all of its comments (comments are actually deleted)
   @Delete(":id")
   removeThread(@Param("id") id: string): { message: string } {
-    const deleted = this.threadsService.deleteThreadIncludingComments(
-      Number(id),
-    );
+    const deleted = this.threadsService.deleteThreadIncludingComments(id);
     if (!deleted) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }

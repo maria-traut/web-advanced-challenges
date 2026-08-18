@@ -1,4 +1,5 @@
-import type { Thread, Comment } from "./types";
+/*
+
 
 export const initialThreads: Thread[] = [
   {
@@ -89,3 +90,4 @@ export const initialComments: Comment[] = [
     createdAt: new Date(),
   },
 ];
+*/

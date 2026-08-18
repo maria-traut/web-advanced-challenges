@@ -29,13 +29,3 @@ export class Thread {
   @OneToMany(() => Comment, (comment) => comment.thread)
   comments!: Comment[];
 }
-
-/*
-export type Thread = {
-  id: number;
-  title: string;
-  author: string;
-  body: string;
-  createdAt: Date;
-};
-*/

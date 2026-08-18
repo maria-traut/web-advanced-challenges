@@ -46,14 +46,17 @@ export class ThreadsService {
   }
 
   // Delete thread and all of its comments
-  deleteThreadIncludingComments(threadId: number): boolean {
-    // 1. get array of comments belonging to specific thread
-    const commentsToDelete = this.commentsRepository.findByThreadId(threadId);
-    // 2. delete every comment belonging to specific thread
-    commentsToDelete.forEach((comment) =>
-      this.commentsRepository.delete(comment.id),
-    );
-    // 3. delete specific thread itself
-    return this.threadsRepository.delete(threadId);
+  async deleteThreadIncludingComments(threadId: string): Promise<void> {
+    const comments = await this.comments.find({
+      where: {
+        thread: {
+          id: threadId,
+        },
+      },
+    });
+
+    await this.comments.remove(comments);
+
+    await this.threads.delete(threadId);
   }
 }
