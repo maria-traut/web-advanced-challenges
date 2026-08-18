@@ -13,7 +13,6 @@ export class ThreadsService {
     private readonly comments: Repository<Comment>,
   ) {}
 
-  // Create a thread with title and body (and author)
   async addNewThread(
     title: string,
     author: string,
@@ -22,18 +21,14 @@ export class ThreadsService {
     if (!title || title.trim().length < 2) {
       throw new Error("Title must be at least 2 characters");
     }
-    // 1. Synchronous (Local): Builds the entity instance in memory
     const newThread = this.threads.create({ title, author, body });
-    // 2. Asynchronous (API): Executes the INSERT statement via TypeORM
     return this.threads.save(newThread);
   }
 
-  // List all threads
   async getAllThreads(): Promise<Thread[]> {
     return this.threads.find();
   }
 
-  // Get one thread including its comments
   async getThreadByIdIncludingComments(
     id: string,
   ): Promise<Thread & { comments: Comment[] }> {
@@ -45,7 +40,6 @@ export class ThreadsService {
     return { ...thread, comments };
   }
 
-  // Delete thread and all of its comments
   async deleteThreadIncludingComments(threadId: string): Promise<void> {
     const comments = await this.comments.find({
       where: {
@@ -54,9 +48,7 @@ export class ThreadsService {
         },
       },
     });
-
     await this.comments.remove(comments);
-
     await this.threads.delete(threadId);
   }
 }
