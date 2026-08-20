@@ -2,10 +2,12 @@ import {
   Controller,
   Get,
   Post,
+  Patch,
   Param,
   Body,
   NotFoundException,
   Delete,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
@@ -14,6 +16,7 @@ import { Comment } from "../comments/entities/comment.entity";
 import { ThreadWithComments } from "../types";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { CreateCommentDto } from "../comments/dto/createComment.dto";
+import { UpdateThreadDto } from "./dto/updateThread.dto";
 
 @Controller("threads")
 export class ThreadsController {
@@ -47,6 +50,19 @@ export class ThreadsController {
     @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
     return this.commentsService.create(id, dto);
+  }
+  // Add a PATCH /threads/:id route so threads can be updated without sending the full representation.
+  @Patch(":id")
+  async update(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() dto: UpdateThreadDto,
+  ) {
+    const thread = await this.threadsService.update(id, dto);
+    if (!thread) {
+      throw new NotFoundException(`Thread with ID '${id}' not found`);
+    }
+
+    return thread;
   }
 
   @Delete(":id")

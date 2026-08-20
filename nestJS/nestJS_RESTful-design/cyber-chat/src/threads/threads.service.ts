@@ -8,6 +8,7 @@ import { Repository } from "typeorm";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
+import { UpdateThreadDto } from "./dto/updateThread.dto";
 
 @Injectable()
 export class ThreadsService {
@@ -35,6 +36,20 @@ export class ThreadsService {
     const comments = await this.comments.find({ where: { thread: { id } } });
     return { ...thread, comments };
   }
+
+  async update(id: string, dto: UpdateThreadDto): Promise<Thread | null> {
+    const thread = await this.threads.findOneBy({ id });
+    if (!thread) return null;
+
+    Object.assign(thread, dto);
+    return this.threads.save(thread);
+  }
+
+  // or:
+  // async update(id: string, dto: UpdateThreadDto): Promise<Thread | null> {
+  //   await this.threads.update(id, dto);
+  //   return this.threads.findOneBy({ id });
+  // }
 
   async delete(id: string): Promise<void> {
     const comments = await this.comments.find({
