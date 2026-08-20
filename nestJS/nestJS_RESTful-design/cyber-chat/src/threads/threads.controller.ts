@@ -11,6 +11,7 @@ import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
+import { ThreadWithComments } from "../types";
 
 @Controller("threads")
 export class ThreadsController {
@@ -25,9 +26,7 @@ export class ThreadsController {
   }
 
   @Get(":id")
-  getThread(
-    @Param("id") id: string,
-  ): Promise<Thread & { comments: Comment[] }> {
+  getThread(@Param("id") id: string): Promise<ThreadWithComments> {
     const thread = this.threadsService.find(id);
     if (!thread) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
