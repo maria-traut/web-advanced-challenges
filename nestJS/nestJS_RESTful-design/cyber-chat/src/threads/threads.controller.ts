@@ -12,6 +12,8 @@ import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
 import { ThreadWithComments } from "../types";
+import { CreateThreadDto } from "./dto/createThread.dto";
+import { CreateCommentDto } from "../comments/dto/createComment.dto";
 
 @Controller("threads")
 export class ThreadsController {
@@ -35,18 +37,16 @@ export class ThreadsController {
   }
 
   @Post()
-  createThread(
-    @Body() body: { title: string; author: string; body: string },
-  ): Promise<Thread> {
-    return this.threadsService.create(body.title, body.author, body.body);
+  createThread(@Body() dto: CreateThreadDto): Promise<Thread> {
+    return this.threadsService.create(dto);
   }
 
   @Post(":id/comments")
   createNewPost(
     @Param("id") id: string,
-    @Body() body: { author: string; body: string },
+    @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
-    return this.commentsService.create(id, body.author, body.body);
+    return this.commentsService.create(id, dto);
   }
 
   @Delete(":id")
