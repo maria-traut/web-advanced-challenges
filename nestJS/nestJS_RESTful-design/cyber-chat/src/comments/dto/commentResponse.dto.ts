@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-export class CommentsResponseDto {
+export class CommentResponseDto {
   @Expose()
   id!: string;
 

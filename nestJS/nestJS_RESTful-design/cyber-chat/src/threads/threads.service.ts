@@ -51,7 +51,7 @@ export class ThreadsService {
   //   return this.threads.findOneBy({ id });
   // }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<boolean> {
     const comments = await this.comments.find({
       where: {
         thread: {
@@ -59,7 +59,9 @@ export class ThreadsService {
         },
       },
     });
-    await this.comments.delete(comments); // delete() or remove(), what is the difference?
-    await this.threads.delete(id);
+    await this.comments.remove(comments);
+    // delete() or remove(), what is the difference?
+    const result = await this.threads.delete(id);
+    return (result.affected ?? 0) > 0;
   }
 }
