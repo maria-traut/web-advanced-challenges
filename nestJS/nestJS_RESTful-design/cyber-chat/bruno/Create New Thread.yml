@@ -1,0 +1,23 @@
+info:
+  name: Create New Thread
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/threads"
+  body:
+    type: json
+    data: |-
+      {
+        "title": "seventh thread",
+        "author": "seventh author",
+        "body": "seventh body"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Thread } from "./entities/thread.entity";
@@ -13,25 +17,34 @@ export class ThreadsService {
     private readonly comments: Repository<Comment>,
   ) {}
 
-  async addNewThread(
-    title: string,
-    author: string,
-    body: string,
-  ): Promise<Thread> {
-    if (!title || title.trim().length < 2) {
-      throw new Error("Title must be at least 2 characters");
+  async create(title: string, author: string, body: string): Promise<Thread> {
+    if (!title) {
+      throw new BadRequestException("Title is required.");
+    }
+    if (title.trim().length < 2) {
+      throw new Error("Title must be at least 2 characters.");
+    }
+    if (!author) {
+      throw new BadRequestException("Title is required.");
+    }
+    if (author.trim().length < 2) {
+      throw new Error("Title must be at least 2 characters.");
+    }
+    if (!body) {
+      throw new BadRequestException("Body is required.");
+    }
+    if (body.trim().length < 2) {
+      throw new Error("Body must be at least 2 characters.");
     }
     const newThread = this.threads.create({ title, author, body });
     return this.threads.save(newThread);
   }
 
-  async getAllThreads(): Promise<Thread[]> {
+  async findAll(): Promise<Thread[]> {
     return this.threads.find();
   }
 
-  async getThreadByIdIncludingComments(
-    id: string,
-  ): Promise<Thread & { comments: Comment[] }> {
+  async find(id: string): Promise<Thread & { comments: Comment[] }> {
     const thread = await this.threads.findOneBy({ id });
     if (!thread) {
       throw new NotFoundException(`Thread with ID ${id} not found.`);
@@ -40,15 +53,15 @@ export class ThreadsService {
     return { ...thread, comments };
   }
 
-  async deleteThreadIncludingComments(threadId: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     const comments = await this.comments.find({
       where: {
         thread: {
-          id: threadId,
+          id,
         },
       },
     });
     await this.comments.remove(comments);
-    await this.threads.delete(threadId);
+    await this.threads.delete(id);
   }
 }

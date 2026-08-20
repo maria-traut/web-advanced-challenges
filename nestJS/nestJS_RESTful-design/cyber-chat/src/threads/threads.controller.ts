@@ -20,15 +20,15 @@ export class ThreadsController {
   ) {}
 
   @Get()
-  listAllThreads(): Promise<Thread[]> {
-    return this.threadsService.getAllThreads();
+  getAllThreads(): Promise<Thread[]> {
+    return this.threadsService.findAll();
   }
 
   @Get(":id")
-  showThreadIncludingComments(
+  getThread(
     @Param("id") id: string,
   ): Promise<Thread & { comments: Comment[] }> {
-    const thread = this.threadsService.getThreadByIdIncludingComments(id);
+    const thread = this.threadsService.find(id);
     if (!thread) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
@@ -39,7 +39,7 @@ export class ThreadsController {
   createThread(
     @Body() body: { title: string; author: string; body: string },
   ): Promise<Thread> {
-    return this.threadsService.addNewThread(body.title, body.author, body.body);
+    return this.threadsService.create(body.title, body.author, body.body);
   }
 
   @Post(":id/comments")
@@ -47,12 +47,12 @@ export class ThreadsController {
     @Param("id") id: string,
     @Body() body: { author: string; body: string },
   ): Promise<Comment> {
-    return this.commentsService.addNewComment(id, body.author, body.body);
+    return this.commentsService.create(id, body.author, body.body);
   }
 
   @Delete(":id")
-  removeThread(@Param("id") id: string): { message: string } {
-    const deleted = this.threadsService.deleteThreadIncludingComments(id);
+  deleteThread(@Param("id") id: string): { message: string } {
+    const deleted = this.threadsService.delete(id);
     if (!deleted) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
