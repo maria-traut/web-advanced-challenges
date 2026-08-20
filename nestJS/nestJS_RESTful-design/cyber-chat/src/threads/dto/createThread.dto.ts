@@ -3,7 +3,7 @@ import { IsString, IsNotEmpty, MaxLength } from "class-validator";
 export class CreateThreadDto {
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
+  @MaxLength(100)
   title!: string;
 
   @IsString()
@@ -13,6 +13,6 @@ export class CreateThreadDto {
 
   @IsString()
   @IsNotEmpty()
-  @MaxLength(50)
+  @MaxLength(40)
   author!: string;
 }
