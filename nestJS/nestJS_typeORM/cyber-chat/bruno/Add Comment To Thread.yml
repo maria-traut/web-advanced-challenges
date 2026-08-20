@@ -1,0 +1,26 @@
+info:
+  name: Add Comment To Thread
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/threads/:id/comments"
+  params:
+    - name: id
+      value: b8267b8f-4d0c-42a5-9a5b-bd5134af3380
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "author": "third new comment author",
+          "body": "third new comment body"
+        }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

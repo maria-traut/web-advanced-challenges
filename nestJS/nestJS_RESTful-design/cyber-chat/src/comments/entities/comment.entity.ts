@@ -26,13 +26,3 @@ export class Comment {
   @ManyToOne(() => Thread, (thread) => thread.comments)
   thread!: Thread;
 }
-
-/*
-export type Comment = {
-  id: number;
-  threadId: number;
-  author: string;
-  body: string;
-  createdAt: Date;
-};
-*/

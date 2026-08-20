@@ -9,12 +9,11 @@ export class CommentsService {
     @InjectRepository(Comment) private readonly comments: Repository<Comment>,
   ) {}
 
-  // Get one comment
-  async getCommentById(id: string): Promise<Comment | null> {
+  async find(id: string): Promise<Comment | null> {
     return this.comments.findOneBy({ id });
   }
 
-  async addNewComment(
+  async create(
     threadId: string,
     author: string,
     body: string,
