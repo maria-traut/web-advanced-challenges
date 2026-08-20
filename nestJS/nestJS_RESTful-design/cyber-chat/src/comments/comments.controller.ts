@@ -33,9 +33,3 @@ export class CommentsController {
     return { message: `Comment with ID "${id}" deleted.` };
   }
 }
-
-// Task 2: The Response Boundary
-// Create ThreadResponseDto and CommentResponseDto. Mark every exposed field with @Expose(). Use @Type(() => Date) on the createdAt field so it serializes as a real Date.
-// Register ClassSerializerInterceptor globally in main.ts with excludeExtraneousValues: true.
-// Update the services to map TypeORM entities to response DTOs with plainToInstance before returning. No service method should return a raw entity.
-// Confirm that adding a new column to the Thread entity does not change the API response. The new column should stay invisible to clients until it is opted into the response DTO.
