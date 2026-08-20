@@ -7,6 +7,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
+import { CreateThreadDto } from "./dto/createThread.dto";
 
 @Injectable()
 export class ThreadsService {
@@ -17,26 +18,8 @@ export class ThreadsService {
     private readonly comments: Repository<Comment>,
   ) {}
 
-  async create(title: string, author: string, body: string): Promise<Thread> {
-    if (!title) {
-      throw new BadRequestException("Title is required.");
-    }
-    if (title.trim().length < 2) {
-      throw new Error("Title must be at least 2 characters.");
-    }
-    if (!author) {
-      throw new BadRequestException("Author is required.");
-    }
-    if (author.trim().length < 2) {
-      throw new Error("Author must be at least 2 characters.");
-    }
-    if (!body) {
-      throw new BadRequestException("Body is required.");
-    }
-    if (body.trim().length < 2) {
-      throw new Error("Body must be at least 2 characters.");
-    }
-    const newThread = this.threads.create({ title, author, body });
+  async create(dto: CreateThreadDto): Promise<Thread> {
+    const newThread = this.threads.create(dto);
     return this.threads.save(newThread);
   }
 
