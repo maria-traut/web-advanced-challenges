@@ -25,10 +25,10 @@ export class ThreadsService {
       throw new Error("Title must be at least 2 characters.");
     }
     if (!author) {
-      throw new BadRequestException("Title is required.");
+      throw new BadRequestException("Author is required.");
     }
     if (author.trim().length < 2) {
-      throw new Error("Title must be at least 2 characters.");
+      throw new Error("Author must be at least 2 characters.");
     }
     if (!body) {
       throw new BadRequestException("Body is required.");
@@ -61,7 +61,7 @@ export class ThreadsService {
         },
       },
     });
-    await this.comments.remove(comments);
+    await this.comments.delete(comments); // delete() or remove(), what is the difference?
     await this.threads.delete(id);
   }
 }
