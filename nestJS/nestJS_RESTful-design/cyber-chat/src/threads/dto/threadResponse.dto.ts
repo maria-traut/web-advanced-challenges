@@ -1,6 +1,6 @@
 import { Expose, Type } from "class-transformer";
 
-export class ThreadsResponseDto {
+export class ThreadResponseDto {
   @Expose()
   id!: string;
 
