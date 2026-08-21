@@ -4,6 +4,7 @@ import { CommentsModule } from "./comments/comments.module";
 import { ThreadsModule } from "./threads/threads.module";
 import { Thread } from "./threads/entities/thread.entity";
 import { Comment } from "./comments/entities/comment.entity";
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Comment } from "./comments/entities/comment.entity";
     }),
     CommentsModule,
     ThreadsModule,
+    UsersModule,
   ],
 })
 export class AppModule {}
