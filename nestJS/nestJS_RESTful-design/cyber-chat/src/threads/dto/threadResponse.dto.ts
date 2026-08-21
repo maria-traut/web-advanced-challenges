@@ -8,6 +8,9 @@ export class ThreadResponseDto {
   title!: string;
 
   @Expose()
+  subtitle!: string;
+
+  @Expose()
   body!: string;
 
   @Expose()

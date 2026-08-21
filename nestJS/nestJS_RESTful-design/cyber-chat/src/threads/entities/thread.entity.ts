@@ -15,8 +15,8 @@ export class Thread {
   @Column({ type: "varchar", length: 120 })
   title!: string;
 
-  // @Column({ type: "varchar", length: 120 })
-  // subtitle!: string;
+  @Column({ type: "varchar", length: 120, nullable: true })
+  subtitle?: string;
 
   @Column({ type: "text" })
   body!: string;
