@@ -4,6 +4,9 @@ import {
   Param,
   NotFoundException,
   Delete,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
 } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { CommentsService } from "./comments.service";
@@ -14,7 +17,9 @@ export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
   @Get(":id")
-  async getComment(@Param("id") id: string): Promise<CommentResponseDto> {
+  async getComment(
+    @Param("id", ParseUUIDPipe) id: string,
+  ): Promise<CommentResponseDto> {
     const comment = await this.commentsService.find(id);
     if (!comment) {
       throw new NotFoundException(`Comment with ID "${id}" not found.`);
@@ -25,11 +30,11 @@ export class CommentsController {
   }
 
   @Delete(":id")
-  deleteComment(@Param("id") id: string): { message: string } {
-    const comment = this.commentsService.softDeleteComment(id);
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteComment(@Param("id") id: string): Promise<void> {
+    const comment = await this.commentsService.softDeleteComment(id);
     if (!comment) {
       throw new NotFoundException(`Comment with ID "${id}" not found.`);
     }
-    return { message: `Comment with ID "${id}" deleted.` };
   }
 }

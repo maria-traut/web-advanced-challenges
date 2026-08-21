@@ -9,6 +9,8 @@ import {
   Delete,
   ParseUUIDPipe,
   SerializeOptions,
+  HttpCode,
+  HttpStatus,
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
@@ -37,7 +39,9 @@ export class ThreadsController {
 
   @Get(":id")
   @SerializeOptions({ type: ThreadWithCommentsResponseDto })
-  async getThread(@Param("id") id: string): Promise<ThreadWithComments> {
+  async getThread(
+    @Param("id", ParseUUIDPipe) id: string,
+  ): Promise<ThreadWithComments> {
     const thread = await this.threadsService.find(id);
     if (!thread) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
@@ -54,7 +58,7 @@ export class ThreadsController {
   @Post(":id/comments")
   @SerializeOptions({ type: CommentResponseDto })
   createNewPost(
-    @Param("id") id: string,
+    @Param("id", ParseUUIDPipe) id: string,
     @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
     return this.commentsService.create(id, dto);
@@ -76,11 +80,11 @@ export class ThreadsController {
   }
 
   @Delete(":id")
-  async deleteThread(@Param("id") id: string): Promise<{ message: string }> {
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async deleteThread(@Param("id", ParseUUIDPipe) id: string): Promise<void> {
     const deleted = await this.threadsService.delete(id);
     if (!deleted) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
-    return { message: `Thread with ID "${id}" deleted.` };
   }
 }
