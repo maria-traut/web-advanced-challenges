@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import * as bcrypt from "bcrypt";
 
 @Entity("users")
 export class User {
@@ -12,9 +11,3 @@ export class User {
   @Column()
   passwordHash!: string;
 }
-
-// const saltOrRounds = 10;
-// const password = "random_password";
-// const hash = await bcrypt.hash(password, saltOrRounds);
-
-// const salt = await bcrypt.genSalt();
