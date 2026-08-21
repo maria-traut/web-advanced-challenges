@@ -5,6 +5,7 @@ import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
+import { ThreadWithComments } from "../types";
 
 @Injectable()
 export class ThreadsService {
@@ -24,7 +25,7 @@ export class ThreadsService {
     return this.threads.find();
   }
 
-  async find(id: string): Promise<Thread & { comments: Comment[] }> {
+  async find(id: string): Promise<ThreadWithComments> {
     const thread = await this.threads.findOneBy({ id });
     if (!thread) {
       throw new NotFoundException(`Thread with ID ${id} not found.`);
@@ -35,7 +36,9 @@ export class ThreadsService {
 
   async update(id: string, dto: UpdateThreadDto): Promise<Thread | null> {
     const thread = await this.threads.findOneBy({ id });
-    if (!thread) return null;
+    if (!thread) {
+      throw new NotFoundException(`Thread with ID '${id}' not found`);
+    }
 
     Object.assign(thread, dto);
     return this.threads.save(thread);

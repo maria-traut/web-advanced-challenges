@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Comment } from "./entities/comment.entity";
@@ -25,7 +25,7 @@ export class CommentsService {
   async softDeleteComment(id: string): Promise<Comment | null> {
     const comment = await this.comments.findOneBy({ id });
     if (!comment) {
-      return null;
+      throw new NotFoundException(`Comment with ID '${id}' not found`);
     }
     comment.body = "deleted";
     return this.comments.save(comment);
