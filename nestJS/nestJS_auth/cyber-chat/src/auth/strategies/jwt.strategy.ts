@@ -10,7 +10,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const secret = config.get<string>("JWT_SECRET");
     if (!secret) {
       // fail fast at startup if secret is missing, instead of failing later at runtime
-      throw new Error("JWT_SECRET ist not defined in environment variables.");
+      throw new Error("JWT_SECRET is not defined in environment variables.");
     }
     super({
       // extract token from "Authorization: Bearer <token>" header

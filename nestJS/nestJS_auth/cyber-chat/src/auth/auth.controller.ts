@@ -5,7 +5,9 @@ import {
   Request,
   Body,
   Get,
+  SerializeOptions,
 } from "@nestjs/common";
+import { Public } from "../common/decorators/public.decorator";
 import { AuthGuard } from "@nestjs/passport";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "../users/dto/createUser.dto";
@@ -22,13 +24,18 @@ export class AuthController {
     private usersService: UsersService,
   ) {}
 
+  @Public()
   @Post("register")
+  // runs response through UserResponseDto before sending it back
+  // only @Expose()-marked fields are returned, passwordHash is filtered out
+  @SerializeOptions({ type: UserResponseDto })
   async register(@Body() dto: CreateUserDto) {
-    // creates new user with heashed password
+    // creates new user with hashed password
     // returns created user
     return this.usersService.createUser(dto);
   }
 
+  @Public()
   @Post("login")
   // Guard triggers Passport, which runs LocalStrategy before login method executes
   // LocalStrategy reads username + password from body and calls authService.validateUser()
@@ -48,7 +55,7 @@ export class AuthController {
   // Guard triggers Passport, which runs JwtStrategy before getMe method executes
   // JwtStrategy reads token from Authorization header and calls validate()
   // on success, Passport attaches decoded payload to req.user
-  @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt")) // not needed, protected automatically by the global JwtAuthGuard (no @Public() here)
   getMe(@Request() req: ExpressRequest & { user: User }) {
     // req.user was attached by Passport(userId + username from token payload)
     // no DB lookup or extra logic needed here, just return it
