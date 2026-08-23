@@ -31,4 +31,7 @@ export class Thread {
   // One thread can have many comments (inverse side of the relation)
   @OneToMany(() => Comment, (comment) => comment.thread)
   comments!: Comment[];
+
+  // @ManyToOne(() => User, (user) => user.threads)
+  // user!: User;
 }
