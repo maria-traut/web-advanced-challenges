@@ -55,6 +55,12 @@ export class ThreadsController {
     return this.threadsService.create(dto);
   }
 
+  // @Post()
+  // @SerializeOptions({ type: ThreadResponseDto })
+  // createThread(@Body() dto: CreateThreadDto, @Request() req): Promise<Thread> {
+  //   return this.threadsService.create(dto, req.user.userId);
+  // }
+
   @Post(":id/comments")
   @SerializeOptions({ type: CommentResponseDto })
   createNewPost(
@@ -63,6 +69,15 @@ export class ThreadsController {
   ): Promise<Comment> {
     return this.commentsService.create(id, dto);
   }
+
+  // @Post(":id/comments")
+  // @SerializeOptions({ type: CommentResponseDto })
+  // createNewPost(
+  //   @Param("id", ParseUUIDPipe) id: string,
+  //   @Body() dto: CreateCommentDto, @Request() req
+  // ): Promise<Comment> {
+  //   return this.commentsService.create(id, dto, req.userId);
+  // }
 
   @Patch(":id")
   @SerializeOptions({ type: ThreadResponseDto })

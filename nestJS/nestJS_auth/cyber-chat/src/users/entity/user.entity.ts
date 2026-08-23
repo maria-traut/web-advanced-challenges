@@ -10,4 +10,10 @@ export class User {
 
   @Column()
   passwordHash!: string;
+
+  //   @OneToMany(() => Thread, (thread) => thread.user)
+  //   threads!: Thread[]
+
+  //   @OneToMany(() => Comment, (comment) => comment.user)
+  //   comments!: Comment[]
 }

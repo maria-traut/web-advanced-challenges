@@ -25,4 +25,7 @@ export class Comment {
   // Many comments belong to one thread (owning side of the relation, holds the foreign key)
   @ManyToOne(() => Thread, (thread) => thread.comments)
   thread!: Thread;
+
+  // @ManyToOne(() => User, (user) => user.comments)
+  // user!: User;
 }
