@@ -8,16 +8,14 @@ http:
   url: "{{baseUrl}}/threads"
   body:
     type: json
-    data: |-
-      {
-        "title": "seventh thread",
-        "author": "seventh author",
-        "body": "seventh body"
-      }
-  auth: inherit
+    data: '{"title":"first authorized thread title", "body":"first authorized thread body"}'
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkphbWVzIiwic3ViIjoiZmY5YzVmOGUtYjc5Mi00ZGUyLTk5Y2EtNDAxZWIwMTI3OWQyIiwiaWF0IjoxNzg3NTYyNDM5LCJleHAiOjE3ODc1NjYwMzl9.XYpyUeoeRpealpzoq1q8xtyLxMjw9aniKcaHA1Oehkk
 
 settings:
   encodeUrl: true
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true

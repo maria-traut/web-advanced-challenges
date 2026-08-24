@@ -1,4 +1,5 @@
 import { Expose, Type } from "class-transformer";
+import { UserResponseDto } from "../../users/dto/userResponse.dto";
 
 export class ThreadResponseDto {
   @Expose()
@@ -8,13 +9,14 @@ export class ThreadResponseDto {
   title!: string;
 
   @Expose()
-  subtitle!: string;
+  subtitle!: string | null;
 
   @Expose()
   body!: string;
 
   @Expose()
-  author!: string;
+  @Type(() => UserResponseDto)
+  author!: UserResponseDto;
 
   @Expose()
   @Type(() => Date)

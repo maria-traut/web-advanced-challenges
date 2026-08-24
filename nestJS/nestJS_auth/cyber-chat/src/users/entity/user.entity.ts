@@ -13,9 +13,11 @@ export class User {
   @Column()
   passwordHash!: string;
 
+  // One user can have many threads (inverse side of the relation).
   @OneToMany(() => Thread, (thread) => thread.author)
   threads!: Thread[];
 
+  // One user can have many comments (inverse side of the relation).
   @OneToMany(() => Comment, (comment) => comment.author)
   comments!: Comment[];
 }

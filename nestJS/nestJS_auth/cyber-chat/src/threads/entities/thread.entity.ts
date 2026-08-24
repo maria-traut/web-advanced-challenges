@@ -23,17 +23,15 @@ export class Thread {
   @Column({ type: "text" })
   body!: string;
 
-  // @Column({ type: "varchar", length: 120 })
-  // author!: string;
-
   @CreateDateColumn()
   createdAt!: Date;
 
-  // One-to-many is a relation where B (comment) contains only one instance of A (thread)
-  // One thread can have many comments (inverse side of the relation)
+  // One-to-many is a relation where B (comment) contains only one instance of A (thread).
+  // One thread can have many comments (inverse side of the relation).
   @OneToMany(() => Comment, (comment) => comment.thread)
   comments!: Comment[];
 
+  // Many threads belong to one author/user (owning side of the relation, holds the foreign key).
   @ManyToOne(() => User, (user) => user.threads)
   author!: User;
 }

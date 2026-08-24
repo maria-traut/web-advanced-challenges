@@ -16,9 +16,6 @@ export class Comment {
   @Column({ type: "varchar", length: 500 })
   body!: string;
 
-  // @Column({ type: "varchar", length: 120 })
-  // author!: string;
-
   @CreateDateColumn()
   createdAt!: Date;
 
@@ -27,6 +24,7 @@ export class Comment {
   @ManyToOne(() => Thread, (thread) => thread.comments)
   thread!: Thread;
 
+  // Many comments belong to one author/user (owning side of the relation, holds the foreign key)
   @ManyToOne(() => User, (user) => user.comments)
   author!: User;
 }
