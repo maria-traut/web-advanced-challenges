@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 import { Thread } from "../../threads/entities/thread.entity";
 import { Comment } from "../../comments/entities/comment.entity";
 
