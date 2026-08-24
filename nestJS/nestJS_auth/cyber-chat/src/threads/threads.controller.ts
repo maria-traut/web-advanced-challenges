@@ -11,18 +11,20 @@ import {
   SerializeOptions,
   HttpCode,
   HttpStatus,
+  Request,
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
-import { ThreadWithComments } from "../types";
+import type { AuthenticatedRequest, ThreadWithComments } from "../types/types";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { CreateCommentDto } from "../comments/dto/createComment.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
+import { Public } from "../common/decorators/public.decorator";
 
 @Controller("threads")
 export class ThreadsController {
@@ -31,12 +33,14 @@ export class ThreadsController {
     private readonly commentsService: CommentsService,
   ) {}
 
+  @Public()
   @Get()
   @SerializeOptions({ type: ThreadResponseDto })
   getAllThreads(): Promise<Thread[]> {
     return this.threadsService.findAll();
   }
 
+  @Public()
   @Get(":id")
   @SerializeOptions({ type: ThreadWithCommentsResponseDto })
   async getThread(
@@ -51,26 +55,34 @@ export class ThreadsController {
 
   @Post()
   @SerializeOptions({ type: ThreadResponseDto })
-  createThread(@Body() dto: CreateThreadDto): Promise<Thread> {
-    return this.threadsService.create(dto);
+  createThread(
+    @Request() req: AuthenticatedRequest,
+    @Body() dto: CreateThreadDto,
+  ): Promise<Thread> {
+    return this.threadsService.create(req.user.userId, dto);
   }
 
   @Post(":id/comments")
   @SerializeOptions({ type: CommentResponseDto })
-  createNewPost(
+  createComment(
+    // Gets the thread ID from the URL and validates that it is a UUID.
     @Param("id", ParseUUIDPipe) id: string,
+    // Gets the full HTTP request, including the authenticated user added by Passport.
+    @Request() req: AuthenticatedRequest,
+    // Gets and validates the comment data sent in the request body.
     @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
-    return this.commentsService.create(id, dto);
+    return this.commentsService.create(id, req.user.userId, dto);
   }
 
   @Patch(":id")
   @SerializeOptions({ type: ThreadResponseDto })
   async update(
     @Param("id", ParseUUIDPipe) id: string,
+    @Request() req: AuthenticatedRequest,
     @Body() dto: UpdateThreadDto,
   ) {
-    const thread = await this.threadsService.update(id, dto);
+    const thread = await this.threadsService.update(id, req.user.userId, dto);
 
     if (!thread) {
       throw new NotFoundException(`Thread with ID '${id}' not found`);
@@ -81,8 +93,11 @@ export class ThreadsController {
 
   @Delete(":id")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteThread(@Param("id", ParseUUIDPipe) id: string): Promise<void> {
-    const deleted = await this.threadsService.delete(id);
+  async deleteThread(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Request() req: AuthenticatedRequest,
+  ): Promise<void> {
+    const deleted = await this.threadsService.delete(id, req.user.userId);
     if (!deleted) {
       throw new NotFoundException(`Thread with ID "${id}" not found.`);
     }
