@@ -11,6 +11,7 @@ import {
   SerializeOptions,
   HttpCode,
   HttpStatus,
+  Query,
 } from "@nestjs/common";
 import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
@@ -23,6 +24,7 @@ import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
+import { PaginationQueryDto } from "../common/dto/paginationQuery.dto";
 
 @Controller("threads")
 export class ThreadsController {
@@ -33,8 +35,8 @@ export class ThreadsController {
 
   @Get()
   @SerializeOptions({ type: ThreadResponseDto })
-  getAllThreads(): Promise<Thread[]> {
-    return this.threadsService.findAll();
+  getAllThreads(@Query() pagination: PaginationQueryDto): Promise<Thread[]> {
+    return this.threadsService.findAll(pagination);
   }
 
   @Get(":id")
