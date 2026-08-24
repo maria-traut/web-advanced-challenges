@@ -6,6 +6,7 @@ import {
   ManyToOne,
 } from "typeorm";
 import { Thread } from "../../threads/entities/thread.entity";
+import { User } from "../../users/entity/user.entity";
 
 @Entity("comments")
 export class Comment {
@@ -15,8 +16,8 @@ export class Comment {
   @Column({ type: "varchar", length: 500 })
   body!: string;
 
-  @Column({ type: "varchar", length: 120 })
-  author!: string;
+  // @Column({ type: "varchar", length: 120 })
+  // author!: string;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -26,6 +27,6 @@ export class Comment {
   @ManyToOne(() => Thread, (thread) => thread.comments)
   thread!: Thread;
 
-  // @ManyToOne(() => User, (user) => user.comments)
-  // user!: User;
+  @ManyToOne(() => User, (user) => user.comments)
+  author!: User;
 }

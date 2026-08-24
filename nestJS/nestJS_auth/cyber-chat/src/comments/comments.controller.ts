@@ -7,10 +7,12 @@ import {
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
+  Request,
 } from "@nestjs/common";
 import { plainToInstance } from "class-transformer";
 import { CommentsService } from "./comments.service";
 import { CommentResponseDto } from "./dto/commentResponse.dto";
+import type { AuthenticatedRequest } from "../types";
 
 @Controller("comments")
 export class CommentsController {
@@ -31,10 +33,13 @@ export class CommentsController {
 
   @Delete(":id")
   @HttpCode(HttpStatus.NO_CONTENT)
-  async deleteComment(@Param("id") id: string): Promise<void> {
-    const comment = await this.commentsService.softDeleteComment(id);
-    if (!comment) {
-      throw new NotFoundException(`Comment with ID "${id}" not found.`);
-    }
+  async deleteComment(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Request() req: AuthenticatedRequest,
+  ): Promise<void> {
+    const comment = await this.commentsService.softDeleteComment(
+      id,
+      req.user.userId,
+    );
   }
 }

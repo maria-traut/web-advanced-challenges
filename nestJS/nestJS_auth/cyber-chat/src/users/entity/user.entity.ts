@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Thread } from "../../threads/entities/thread.entity";
+import { Comment } from "../../comments/entities/comment.entity";
 
 @Entity("users")
 export class User {
@@ -15,9 +16,6 @@ export class User {
   @OneToMany(() => Thread, (thread) => thread.author)
   threads!: Thread[];
 
-  //   @OneToMany(() => Thread, (thread) => thread.user)
-  //   threads!: Thread[]
-
-  //   @OneToMany(() => Comment, (comment) => comment.user)
-  //   comments!: Comment[]
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments!: Comment[];
 }
