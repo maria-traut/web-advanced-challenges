@@ -17,14 +17,13 @@ import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
-import type { AuthenticatedRequest, ThreadWithComments } from "../types";
+import type { AuthenticatedRequest, ThreadWithComments } from "../types/types";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { CreateCommentDto } from "../comments/dto/createComment.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
-import { UsersService } from "../users/users.service";
 import { Public } from "../common/decorators/public.decorator";
 
 @Controller("threads")
@@ -32,7 +31,6 @@ export class ThreadsController {
   constructor(
     private readonly threadsService: ThreadsService,
     private readonly commentsService: CommentsService,
-    private readonly usersService: UsersService,
   ) {}
 
   @Public()
@@ -42,6 +40,7 @@ export class ThreadsController {
     return this.threadsService.findAll();
   }
 
+  @Public()
   @Get(":id")
   @SerializeOptions({ type: ThreadWithCommentsResponseDto })
   async getThread(
@@ -66,8 +65,11 @@ export class ThreadsController {
   @Post(":id/comments")
   @SerializeOptions({ type: CommentResponseDto })
   createComment(
+    // Gets the thread ID from the URL and validates that it is a UUID.
     @Param("id", ParseUUIDPipe) id: string,
+    // Gets the full HTTP request, including the authenticated user added by Passport.
     @Request() req: AuthenticatedRequest,
+    // Gets and validates the comment data sent in the request body.
     @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
     return this.commentsService.create(id, req.user.userId, dto);

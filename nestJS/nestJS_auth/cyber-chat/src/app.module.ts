@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
-import { JwtAuthGuard } from "./auth/jwt-auth.guard";
+import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { CommentsModule } from "./comments/comments.module";
 import { ThreadsModule } from "./threads/threads.module";

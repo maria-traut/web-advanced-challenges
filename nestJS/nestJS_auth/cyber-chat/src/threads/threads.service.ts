@@ -9,7 +9,7 @@ import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
-import { ThreadWithComments } from "../types";
+import { ThreadWithComments } from "../types/types";
 import { User } from "../users/entity/user.entity";
 
 @Injectable()
@@ -31,11 +31,6 @@ export class ThreadsService {
     const newThread = this.threads.create({ ...dto, author: user });
     return this.threads.save(newThread);
   }
-
-  // async create(dto: CreateThreadDto): Promise<Thread> {
-  //   const newThread = this.threads.create(dto);
-  //   return this.threads.save(newThread);
-  // }
 
   async findAll(): Promise<Thread[]> {
     return this.threads.find();
@@ -73,15 +68,11 @@ export class ThreadsService {
     return this.threads.save(thread);
   }
 
-  // or:
-  // async update(id: string, dto: UpdateThreadDto): Promise<Thread | null> {
-  //   await this.threads.update(id, dto);
-  //   return this.threads.findOneBy({ id });
-  // }
-
   async delete(id: string, userId: string): Promise<boolean> {
+    // Defines which thread to look for.
     const thread = await this.threads.findOne({
       where: { id },
+      // Loads the related author so I can access thread.author.id.
       relations: {
         author: true,
       },
@@ -97,14 +88,16 @@ export class ThreadsService {
       );
     }
 
-    await this.comments.find({
+    const comments = await this.comments.find({
+      // Finds all comments that belong to the thread with the given ID.
+      // The nested "thread" refers to the Comment -> Thread relation.
       where: {
         thread: {
           id,
         },
       },
     });
-
+    await this.comments.remove(comments);
     await this.threads.remove(thread);
     return true;
   }

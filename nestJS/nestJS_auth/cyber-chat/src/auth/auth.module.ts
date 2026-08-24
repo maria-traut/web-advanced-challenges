@@ -12,6 +12,7 @@ import { ConfigModule, ConfigService } from "@nestjs/config";
   imports: [
     UsersModule,
     PassportModule,
+    // registerAsync() to use ConfigService so the secret comes from ConfigService (instead of being hardcoded)
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

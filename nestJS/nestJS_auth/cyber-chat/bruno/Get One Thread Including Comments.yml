@@ -8,7 +8,7 @@ http:
   url: "{{baseUrl}}/threads/:id"
   params:
     - name: id
-      value: ddfd8765-4910-410b-9e52-997a71b1c1c7
+      value: 7eab5534-e597-4967-9ef7-5b67a724bde6
       type: path
   auth: inherit
 
@@ -17,3 +17,4 @@ settings:
   timeout: 0
   followRedirects: true
   maxRedirects: 5
+  forwardAuthorizationHeader: true
