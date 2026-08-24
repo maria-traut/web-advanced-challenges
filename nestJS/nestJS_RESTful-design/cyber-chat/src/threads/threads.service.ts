@@ -6,6 +6,7 @@ import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadWithComments } from "../types";
+import { PaginationQueryDto } from "../common/dto/paginationQuery.dto";
 
 @Injectable()
 export class ThreadsService {
@@ -21,8 +22,17 @@ export class ThreadsService {
     return this.threads.save(newThread);
   }
 
-  async findAll(): Promise<Thread[]> {
-    return this.threads.find();
+  async findAll(pagination: PaginationQueryDto): Promise<Thread[]> {
+    const { page, limit } = pagination;
+
+    const [data, total] = await this.threads.findAndCount({
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+    return {
+      data,
+      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+    };
   }
 
   async find(id: string): Promise<ThreadWithComments> {
