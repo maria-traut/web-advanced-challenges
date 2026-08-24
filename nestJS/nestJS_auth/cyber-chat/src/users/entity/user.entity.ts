@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Thread } from "../../threads/entities/thread.entity";
 
 @Entity("users")
 export class User {
@@ -10,6 +11,9 @@ export class User {
 
   @Column()
   passwordHash!: string;
+
+  @OneToMany(() => Thread, (thread) => thread.author)
+  threads!: Thread[];
 
   //   @OneToMany(() => Thread, (thread) => thread.user)
   //   threads!: Thread[]

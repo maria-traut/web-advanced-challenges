@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   OneToMany,
+  ManyToOne,
 } from "typeorm";
 import { Comment } from "../../comments/entities/comment.entity";
+import { User } from "../../users/entity/user.entity";
 
 @Entity("threads")
 export class Thread {
@@ -21,8 +23,8 @@ export class Thread {
   @Column({ type: "text" })
   body!: string;
 
-  @Column({ type: "varchar", length: 120 })
-  author!: string;
+  // @Column({ type: "varchar", length: 120 })
+  // author!: string;
 
   @CreateDateColumn()
   createdAt!: Date;
@@ -32,6 +34,6 @@ export class Thread {
   @OneToMany(() => Comment, (comment) => comment.thread)
   comments!: Comment[];
 
-  // @ManyToOne(() => User, (user) => user.threads)
-  // user!: User;
+  @ManyToOne(() => User, (user) => user.threads)
+  author!: User;
 }
