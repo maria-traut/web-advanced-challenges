@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Thread } from "./entities/thread.entity";
@@ -6,6 +10,7 @@ import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadWithComments } from "../types";
+import { User } from "../users/entity/user.entity";
 
 @Injectable()
 export class ThreadsService {
@@ -14,12 +19,23 @@ export class ThreadsService {
     private readonly threads: Repository<Thread>,
     @InjectRepository(Comment)
     private readonly comments: Repository<Comment>,
+    @InjectRepository(User)
+    private readonly users: Repository<User>,
   ) {}
 
-  async create(dto: CreateThreadDto): Promise<Thread> {
-    const newThread = this.threads.create(dto);
+  async create(userId: string, dto: CreateThreadDto): Promise<Thread> {
+    const user = await this.users.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException(`User with ID "${userId}" not found.`);
+    }
+    const newThread = this.threads.create({ ...dto, author: user });
     return this.threads.save(newThread);
   }
+
+  // async create(dto: CreateThreadDto): Promise<Thread> {
+  //   const newThread = this.threads.create(dto);
+  //   return this.threads.save(newThread);
+  // }
 
   async findAll(): Promise<Thread[]> {
     return this.threads.find();
@@ -34,10 +50,23 @@ export class ThreadsService {
     return { ...thread, comments };
   }
 
-  async update(id: string, dto: UpdateThreadDto): Promise<Thread | null> {
-    const thread = await this.threads.findOneBy({ id });
+  async update(
+    id: string,
+    userId: string,
+    dto: UpdateThreadDto,
+  ): Promise<Thread | null> {
+    const thread = await this.threads.findOne({
+      where: { id },
+      relations: { author: true },
+    });
     if (!thread) {
       throw new NotFoundException(`Thread with ID '${id}' not found`);
+    }
+
+    if (thread.author.id !== userId) {
+      throw new ForbiddenException(
+        "You are not allowed to update this thread.",
+      );
     }
 
     Object.assign(thread, dto);
@@ -50,17 +79,33 @@ export class ThreadsService {
   //   return this.threads.findOneBy({ id });
   // }
 
-  async delete(id: string): Promise<boolean> {
-    const comments = await this.comments.find({
+  async delete(id: string, userId: string): Promise<boolean> {
+    const thread = await this.threads.findOne({
+      where: { id },
+      relations: {
+        author: true,
+      },
+    });
+
+    if (!thread) {
+      throw new NotFoundException(`Thread with ID "${id}" not found.`);
+    }
+
+    if (thread.author.id !== userId) {
+      throw new ForbiddenException(
+        "You are not allowed to delete this thread.",
+      );
+    }
+
+    await this.comments.find({
       where: {
         thread: {
           id,
         },
       },
     });
-    await this.comments.remove(comments);
-    // delete() or remove(), what is the difference?
-    const result = await this.threads.delete(id);
-    return (result.affected ?? 0) > 0;
+
+    await this.threads.remove(thread);
+    return true;
   }
 }
