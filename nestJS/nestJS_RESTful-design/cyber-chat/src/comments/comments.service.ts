@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Comment } from "./entities/comment.entity";
+import { CreateCommentDto } from "./dto/createComment.dto";
 
 @Injectable()
 export class CommentsService {
@@ -13,14 +14,9 @@ export class CommentsService {
     return this.comments.findOneBy({ id });
   }
 
-  async create(
-    threadId: string,
-    author: string,
-    body: string,
-  ): Promise<Comment> {
+  async create(threadId: string, dto: CreateCommentDto): Promise<Comment> {
     const newComment = this.comments.create({
-      author,
-      body,
+      ...dto,
       thread: { id: threadId },
     });
     return this.comments.save(newComment);
@@ -29,7 +25,7 @@ export class CommentsService {
   async softDeleteComment(id: string): Promise<Comment | null> {
     const comment = await this.comments.findOneBy({ id });
     if (!comment) {
-      return null;
+      throw new NotFoundException(`Comment with ID '${id}' not found`);
     }
     comment.body = "deleted";
     return this.comments.save(comment);
