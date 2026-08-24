@@ -25,6 +25,7 @@ import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
 import { UsersService } from "../users/users.service";
+import { Public } from "../common/decorators/public.decorator";
 
 @Controller("threads")
 export class ThreadsController {
@@ -34,6 +35,7 @@ export class ThreadsController {
     private readonly usersService: UsersService,
   ) {}
 
+  @Public()
   @Get()
   @SerializeOptions({ type: ThreadResponseDto })
   getAllThreads(): Promise<Thread[]> {
@@ -61,29 +63,15 @@ export class ThreadsController {
     return this.threadsService.create(req.user.userId, dto);
   }
 
-  // @Post()
-  // @SerializeOptions({ type: ThreadResponseDto })
-  // createThread(@Body() dto: CreateThreadDto, @Request() req): Promise<Thread> {
-  //   return this.threadsService.create(dto, req.user.userId);
-  // }
-
   @Post(":id/comments")
   @SerializeOptions({ type: CommentResponseDto })
-  createNewPost(
+  createComment(
     @Param("id", ParseUUIDPipe) id: string,
+    @Request() req: AuthenticatedRequest,
     @Body() dto: CreateCommentDto,
   ): Promise<Comment> {
-    return this.commentsService.create(id, dto);
+    return this.commentsService.create(id, req.user.userId, dto);
   }
-
-  // @Post(":id/comments")
-  // @SerializeOptions({ type: CommentResponseDto })
-  // createNewPost(
-  //   @Param("id", ParseUUIDPipe) id: string,
-  //   @Body() dto: CreateCommentDto, @Request() req
-  // ): Promise<Comment> {
-  //   return this.commentsService.create(id, dto, req.user.userId);
-  // }
 
   @Patch(":id")
   @SerializeOptions({ type: ThreadResponseDto })
