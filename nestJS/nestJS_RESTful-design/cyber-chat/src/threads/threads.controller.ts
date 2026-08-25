@@ -17,7 +17,7 @@ import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
-import { ThreadWithComments } from "../types";
+import { PaginatedThreads, ThreadWithComments } from "../types";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { CreateCommentDto } from "../comments/dto/createComment.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
@@ -34,8 +34,9 @@ export class ThreadsController {
   ) {}
 
   @Get()
-  @SerializeOptions({ type: ThreadResponseDto })
-  getAllThreads(@Query() pagination: PaginationQueryDto): Promise<Thread[]> {
+  getAllThreads(
+    @Query() pagination: PaginationQueryDto,
+  ): Promise<PaginatedThreads> {
     return this.threadsService.findAll(pagination);
   }
 
