@@ -5,8 +5,10 @@ import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
-import { ThreadWithComments } from "../types";
+import { PaginatedThreads, ThreadWithComments } from "../types";
 import { PaginationQueryDto } from "../common/dto/paginationQuery.dto";
+import { plainToInstance } from "class-transformer";
+import { ThreadResponseDto } from "./dto/threadResponse.dto";
 
 @Injectable()
 export class ThreadsService {
@@ -22,15 +24,17 @@ export class ThreadsService {
     return this.threads.save(newThread);
   }
 
-  async findAll(pagination: PaginationQueryDto): Promise<Thread[]> {
+  async findAll(pagination: PaginationQueryDto): Promise<PaginatedThreads> {
     const { page, limit } = pagination;
 
     const [data, total] = await this.threads.findAndCount({
       skip: (page - 1) * limit,
       take: limit,
     });
+    const transformedData = plainToInstance(ThreadResponseDto, data);
+
     return {
-      data,
+      data: transformedData,
       meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
     };
   }
