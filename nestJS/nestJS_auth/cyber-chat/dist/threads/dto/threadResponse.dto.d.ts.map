@@ -1,0 +1,1 @@
+{"version":3,"file":"threadResponse.dto.d.ts","sourceRoot":"","sources":["../../../src/threads/dto/threadResponse.dto.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,eAAe,EAAE,MAAM,kCAAkC,CAAC;AAEnE,qBAAa,iBAAiB;IAE5B,EAAE,EAAG,MAAM,CAAC;IAGZ,KAAK,EAAG,MAAM,CAAC;IAGf,QAAQ,EAAG,MAAM,GAAG,IAAI,CAAC;IAGzB,IAAI,EAAG,MAAM,CAAC;IAId,MAAM,EAAG,eAAe,CAAC;IAIzB,SAAS,EAAG,IAAI,CAAC;CAClB"}
