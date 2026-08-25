@@ -17,7 +17,7 @@ import { ThreadsService } from "./threads.service";
 import { CommentsService } from "../comments/comments.service";
 import { Thread } from "./entities/thread.entity";
 import { Comment } from "../comments/entities/comment.entity";
-import { PaginatedThreads, ThreadWithComments } from "../types";
+import type { PaginatedThreads, ThreadWithComments } from "../types";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { CreateCommentDto } from "../comments/dto/createComment.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
@@ -25,6 +25,7 @@ import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
 import { SortFilterQueryDto } from "../common/dto/sortFilterQuery.dto";
+// import { ParseDatePipe } from "../pipes/customValidation.pipe";
 
 @Controller("threads")
 export class ThreadsController {
@@ -35,9 +36,10 @@ export class ThreadsController {
 
   @Get()
   getAllThreads(
-    @Query() sortFilter: SortFilterQueryDto,
+    @Query() query: SortFilterQueryDto,
+    // @Query("startDate", ParseDatePipe) startDate?: Date,
   ): Promise<PaginatedThreads> {
-    return this.threadsService.findAll(sortFilter);
+    return this.threadsService.findAll(query);
   }
 
   @Get(":id")
