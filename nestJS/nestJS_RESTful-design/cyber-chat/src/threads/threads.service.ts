@@ -6,7 +6,6 @@ import { Comment } from "../comments/entities/comment.entity";
 import { CreateThreadDto } from "./dto/createThread.dto";
 import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { PaginatedThreads, ThreadWithComments } from "../types";
-import { PaginationQueryDto } from "../common/dto/paginationQuery.dto";
 import { plainToInstance } from "class-transformer";
 import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { SortFilterQueryDto } from "../common/dto/sortFilterQuery.dto";
@@ -33,7 +32,6 @@ export class ThreadsService {
     const field = isDescending ? currentSort.slice(1) : currentSort;
     const where = author ? { author } : {};
 
-    /*
     // Fetch the paginated threads and the total number of threads.
     const [data, total] = await this.threads.findAndCount({
       skip: (page - 1) * limit,
@@ -43,26 +41,11 @@ export class ThreadsService {
       order: { [field]: isDescending ? "DESC" : "ASC" },
       where,
     });
-    */
-
-    const options: any = {
-      skip: (page - 1) * limit,
-      take: limit,
-      order: { [field]: isDescending ? "DESC" : "ASC" },
-    };
-    if (author) {
-      options.where = { author };
-    }
-
-    console.log("options:", options);
-    const [data, total] = await this.threads.findAndCount(options);
-    console.log("result:", data, total);
 
     // Transform the database entities into ThreadResponseDto instances.
     const transformedData = plainToInstance(ThreadResponseDto, data, {
       excludeExtraneousValues: true,
     });
-    console.log("transformed:", transformedData);
 
     // Return the paginated data together with pagination metadata.
     return {

@@ -5,11 +5,17 @@ info:
 
 http:
   method: GET
-  url: "{{baseUrl}}/threads/:id"
+  url: "{{baseUrl}}/threads?page=1&limit=5&author=third author"
   params:
-    - name: id
-      value: 95a1a142-c44f-4aa7-adbe-51a2085a96ec
-      type: path
+    - name: page
+      value: "1"
+      type: query
+    - name: limit
+      value: "5"
+      type: query
+    - name: author
+      value: third author
+      type: query
   auth: inherit
 
 settings:
