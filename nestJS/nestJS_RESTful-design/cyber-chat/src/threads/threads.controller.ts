@@ -24,7 +24,7 @@ import { UpdateThreadDto } from "./dto/updateThread.dto";
 import { ThreadResponseDto } from "./dto/threadResponse.dto";
 import { CommentResponseDto } from "../comments/dto/commentResponse.dto";
 import { ThreadWithCommentsResponseDto } from "./dto/threadWithCommentsResponse.dto";
-import { PaginationQueryDto } from "../common/dto/paginationQuery.dto";
+import { SortFilterQueryDto } from "../common/dto/sortFilterQuery.dto";
 
 @Controller("threads")
 export class ThreadsController {
@@ -35,9 +35,9 @@ export class ThreadsController {
 
   @Get()
   getAllThreads(
-    @Query() pagination: PaginationQueryDto,
+    @Query() sortFilter: SortFilterQueryDto,
   ): Promise<PaginatedThreads> {
-    return this.threadsService.findAll(pagination);
+    return this.threadsService.findAll(sortFilter);
   }
 
   @Get(":id")
