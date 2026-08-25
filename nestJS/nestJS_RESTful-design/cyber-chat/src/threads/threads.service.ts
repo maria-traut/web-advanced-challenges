@@ -25,17 +25,33 @@ export class ThreadsService {
   }
 
   async findAll(pagination: PaginationQueryDto): Promise<PaginatedThreads> {
+    // Extract the current page number and the number of items per page.
     const { page, limit } = pagination;
 
+    // Fetch the paginated threads and the total number of threads.
     const [data, total] = await this.threads.findAndCount({
       skip: (page - 1) * limit,
+
+      // Limit the number of records returned for the current page.
       take: limit,
     });
-    const transformedData = plainToInstance(ThreadResponseDto, data);
+
+    // Transform the database entities into ThreadResponseDto instances.
+    const transformedData = plainToInstance(ThreadResponseDto, data, {
+      excludeExtraneousValues: true,
+    });
+
+    // Return the paginated data together with pagination metadata.
 
     return {
       data: transformedData,
-      meta: { page, limit, total, totalPages: Math.ceil(total / limit) },
+      meta: {
+        page,
+        limit,
+        total,
+        // Calculate the total number of pages
+        totalPages: Math.ceil(total / limit),
+      },
     };
   }
 
