@@ -1,0 +1,21 @@
+info:
+  name: Create New Thread
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/threads"
+  body:
+    type: json
+    data: '{"title":"second authorized thread title", "body":"second authorized thread body"}'
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pYSIsInN1YiI6IjkzZDNkNzYzLTg1YjMtNGJjMC04ZmZkLWMxYjhiMDQ4M2Q4MSIsImlhdCI6MTc4Nzc0ODQxMywiZXhwIjoxNzg3NzUyMDEzfQ.hMrgM2Pla5fbE1vfa9dDjZewsm3ZDvde43u-CvcmVlY
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
