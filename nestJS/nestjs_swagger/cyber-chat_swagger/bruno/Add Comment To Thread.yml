@@ -1,0 +1,28 @@
+info:
+  name: Add Comment To Thread
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/threads/:id/comments"
+  params:
+    - name: id
+      value: d2b1aeca-1fec-4d08-bb7b-08b430c8aa4f
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+             "body": "first comment body"
+        }
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ik1pYSIsInN1YiI6IjkzZDNkNzYzLTg1YjMtNGJjMC04ZmZkLWMxYjhiMDQ4M2Q4MSIsImlhdCI6MTc4Nzc0ODQxMywiZXhwIjoxNzg3NzUyMDEzfQ.hMrgM2Pla5fbE1vfa9dDjZewsm3ZDvde43u-CvcmVlY
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true
