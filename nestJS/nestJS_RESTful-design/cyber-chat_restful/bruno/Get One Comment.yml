@@ -1,0 +1,19 @@
+info:
+  name: Get One Comment
+  type: http
+  seq: 10
+
+http:
+  method: GET
+  url: "{{baseUrl}}/comments/:id"
+  params:
+    - name: id
+      value: dc23e608-1dd0-43e1-8096-3e7451a5ef0a
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

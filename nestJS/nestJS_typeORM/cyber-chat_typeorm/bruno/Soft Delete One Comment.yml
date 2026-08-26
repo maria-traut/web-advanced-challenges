@@ -1,0 +1,19 @@
+info:
+  name: Soft Delete One Comment
+  type: http
+  seq: 12
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/comments/:id"
+  params:
+    - name: id
+      value: 1cfdd64a-620e-46f5-b806-a5fbeb70e2d6
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
