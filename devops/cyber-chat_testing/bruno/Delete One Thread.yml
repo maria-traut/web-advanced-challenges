@@ -1,0 +1,27 @@
+info:
+  name: Delete One Thread
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/threads/:id"
+  params:
+    - name: id
+      value: "1786992545249"
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "threadId": "1",
+          "author": "first new comment author",
+          "body": "first new comment body",
+        },
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
