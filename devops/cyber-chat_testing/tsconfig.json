@@ -44,5 +44,6 @@
     // TS decorators for NestJS
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
-  }
+  },
+  "exclude": ["node_modules", "dist", "vitest.config.mts"]
 }
