@@ -23,17 +23,14 @@ export class ThreadsService {
     private readonly users: Repository<User>,
   ) {}
 
-  async create(userId: string, dto: CreateThreadDto): Promise<Thread> {
-    const user = await this.users.findOneBy({ id: userId });
-    if (!user) {
-      throw new NotFoundException(`User with ID "${userId}" not found.`);
-    }
-    const newThread = this.threads.create({ ...dto, author: user });
-    return this.threads.save(newThread);
-  }
-
   async findAll(): Promise<Thread[]> {
-    return this.threads.find();
+    const threads = await this.threads.find();
+
+    if (threads.length === 0) {
+      throw new NotFoundException("No threads found.");
+    }
+
+    return threads;
   }
 
   async find(id: string): Promise<ThreadWithComments> {
@@ -43,6 +40,15 @@ export class ThreadsService {
     }
     const comments = await this.comments.find({ where: { thread: { id } } });
     return { ...thread, comments };
+  }
+
+  async create(userId: string, dto: CreateThreadDto): Promise<Thread> {
+    const user = await this.users.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException(`User with ID "${userId}" not found.`);
+    }
+    const newThread = this.threads.create({ ...dto, author: user });
+    return this.threads.save(newThread);
   }
 
   async update(
