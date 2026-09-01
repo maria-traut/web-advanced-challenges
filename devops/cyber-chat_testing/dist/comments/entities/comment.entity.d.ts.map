@@ -1,0 +1,1 @@
+{"version":3,"file":"comment.entity.d.ts","sourceRoot":"","sources":["../../../src/comments/entities/comment.entity.ts"],"names":[],"mappings":"AAOA,OAAO,EAAE,MAAM,EAAE,MAAM,sCAAsC,CAAC;AAC9D,OAAO,EAAE,IAAI,EAAE,MAAM,gCAAgC,CAAC;AAEtD,qBACa,OAAO;IAElB,EAAE,EAAG,MAAM,CAAC;IAGZ,IAAI,EAAG,MAAM,CAAC;IAGd,SAAS,EAAG,IAAI,CAAC;IAKjB,MAAM,EAAG,MAAM,CAAC;IAIhB,MAAM,EAAG,IAAI,CAAC;CACf"}
