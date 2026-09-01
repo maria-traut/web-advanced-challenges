@@ -1,0 +1,82 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ThreadResponseDto = void 0;
+const openapi = require("@nestjs/swagger");
+const class_transformer_1 = require("class-transformer");
+const userResponse_dto_1 = require("../../users/dto/userResponse.dto");
+const swagger_1 = require("@nestjs/swagger");
+class ThreadResponseDto {
+    id;
+    title;
+    subtitle;
+    body;
+    author;
+    createdAt;
+    static _OPENAPI_METADATA_FACTORY() {
+        return { id: { required: true, type: () => String }, title: { required: true, type: () => String }, subtitle: { required: true, type: () => String, nullable: true }, body: { required: true, type: () => String }, author: { required: true, type: () => require("../../users/dto/userResponse.dto").UserResponseDto }, createdAt: { required: true, type: () => Date } };
+    }
+}
+exports.ThreadResponseDto = ThreadResponseDto;
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The id of the thread",
+        example: "550e8400-e29b-41d4-a716-446655440000",
+        format: "uuid",
+    }),
+    __metadata("design:type", String)
+], ThreadResponseDto.prototype, "id", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The title of the thread",
+        example: "What do you think about the color violet?",
+    }),
+    __metadata("design:type", String)
+], ThreadResponseDto.prototype, "title", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The subtitle of the thread",
+        example: "Finding a color for my room",
+        nullable: true,
+    }),
+    __metadata("design:type", Object)
+], ThreadResponseDto.prototype, "subtitle", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The text content of the thread",
+        example: "I'm considering violet as the main color for my room. Do you think it feels calm and welcoming, or is it too intense?",
+    }),
+    __metadata("design:type", String)
+], ThreadResponseDto.prototype, "body", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The author of the thread",
+        type: () => userResponse_dto_1.UserResponseDto,
+    }),
+    (0, class_transformer_1.Type)(() => userResponse_dto_1.UserResponseDto),
+    __metadata("design:type", userResponse_dto_1.UserResponseDto)
+], ThreadResponseDto.prototype, "author", void 0);
+__decorate([
+    (0, class_transformer_1.Expose)(),
+    (0, swagger_1.ApiProperty)({
+        description: "The date the thread was created",
+        example: "2026-08-26T13:42:15.123Z",
+        format: "date-time",
+    }),
+    (0, class_transformer_1.Type)(() => Date),
+    __metadata("design:type", Date)
+], ThreadResponseDto.prototype, "createdAt", void 0);
+//# sourceMappingURL=threadResponse.dto.js.map
