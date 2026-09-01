@@ -1,1 +1,0 @@
-{"version":3,"file":"threadWithCommentsResponse.dto.d.ts","sourceRoot":"","sources":["../../../src/threads/dto/threadWithCommentsResponse.dto.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,iBAAiB,EAAE,MAAM,sBAAsB,CAAC;AACzD,OAAO,EAAE,kBAAkB,EAAE,MAAM,wCAAwC,CAAC;AAG5E,qBAAa,6BAA8B,SAAQ,iBAAiB;IAOlE,QAAQ,EAAG,kBAAkB,EAAE,CAAC;CACjC"}
