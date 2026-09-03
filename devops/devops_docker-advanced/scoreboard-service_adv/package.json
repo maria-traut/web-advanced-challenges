@@ -1,0 +1,18 @@
+{
+  "name": "scoreboard-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "docker:dev": "docker compose -f compose.yaml -f compose.dev.yaml up",
+    "docker:dev:down": "docker compose -f compose.yaml -f compose.dev.yaml down",
+    "docker:dev:reset": "docker volume rm postgres_dev_data",
+    "docker:prod": "docker compose up",
+    "docker:prod:down": "docker compose down"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2"
+  }
+}
