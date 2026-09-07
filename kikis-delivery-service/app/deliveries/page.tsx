@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getAllDeliveries } from "@/lib/services/deliveriesService";
 
 export default function DeliveriesPage() {
@@ -9,7 +10,9 @@ export default function DeliveriesPage() {
       <ul>
         {deliveries.map((delivery) => (
           <li key={delivery.id}>
-            {delivery.pickup} to {delivery.destination} ({delivery.status})
+            <Link href={`/deliveries/${delivery.id}`}>
+              {delivery.pickup} to {delivery.destination} ({delivery.status})
+            </Link>
           </li>
         ))}
       </ul>

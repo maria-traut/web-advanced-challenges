@@ -3,14 +3,10 @@ export default async function DeliveryDetailPage({
   params,
 }: PageProps<"/deliveries/[id]">) {
   const { id } = await params;
-  const delivery = await getDeliveryById(id);
+  const delivery = getDeliveryById(id);
 
   if (!delivery) {
-    return (
-      <>
-        <h1>Delivery {id} not found</h1>
-      </>
-    );
+    throw new Error(`Delivery ${id} not found`);
   }
 
   return (
