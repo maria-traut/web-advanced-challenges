@@ -1,4 +1,10 @@
-import "./globals.css";
+import { Cherry_Bomb_One } from "next/font/google";
+
+const cherryBomb = Cherry_Bomb_One({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-cherry-bomb-one",
+});
 
 export default function RootLayout({
   children,
@@ -7,9 +13,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={cherryBomb.variable}>
         <header>
-          <h1>Kiki's Delivery Service</h1>
+          <h1 style={{ fontFamily: cherryBomb.style.fontFamily }}>
+            Kiki's Delivery Service
+          </h1>
         </header>
         {children}
       </body>

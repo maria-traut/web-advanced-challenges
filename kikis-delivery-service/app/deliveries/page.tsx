@@ -7,7 +7,7 @@ export default function DeliveriesPage() {
   return (
     <>
       <h1>All Deliveries</h1>
-      <ul>
+      <ol>
         {deliveries.map((delivery) => (
           <li key={delivery.id}>
             <Link href={`/deliveries/${delivery.id}`}>
@@ -15,7 +15,7 @@ export default function DeliveriesPage() {
             </Link>
           </li>
         ))}
-      </ul>
+      </ol>
     </>
   );
 }
