@@ -7,7 +7,7 @@ export type DeliveryRequest = {
   status: DeliveryStatus;
 };
 
-const deliveries: DeliveryRequest[] = [
+export const deliveries: DeliveryRequest[] = [
   { id: "1", pickup: "Bakery", destination: "Clock Tower", status: "active" },
   {
     id: "2",
