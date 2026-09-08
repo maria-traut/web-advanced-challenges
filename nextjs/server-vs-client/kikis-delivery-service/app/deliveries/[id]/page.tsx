@@ -13,7 +13,7 @@ export default async function DeliveryDetailPage({
   return (
     <>
       <Link href="/deliveries">&#8592; Show all deliveries</Link>
-      <h1>Delivery {id}</h1>
+      <h2>Delivery {id}</h2>
       <p>
         From {delivery.pickup} to {delivery.destination}
       </p>
