@@ -10,6 +10,9 @@ export default function HomePage() {
       <p>
         <Link href="/deliveries">Show all deliveries</Link>
       </p>
+      <p>
+        <Link href="/deliveries/new">+ Add Delivery</Link>
+      </p>
     </>
   );
 }

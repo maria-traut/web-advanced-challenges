@@ -9,6 +9,12 @@ export default function DeliveriesPage() {
     <>
       <h2>All Deliveries</h2>
       <DeliveryFilter deliveries={deliveries} />
+      <p>
+        <Link href="/">Homepage</Link>
+      </p>
+      <p>
+        <Link href="/deliveries/new">+ Add Delivery</Link>
+      </p>
       <ol>
         {deliveries.map((delivery) => (
           <li key={delivery.id}>
