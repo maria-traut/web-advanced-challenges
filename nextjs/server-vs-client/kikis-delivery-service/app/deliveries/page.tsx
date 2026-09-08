@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { getAllDeliveries } from "@/lib/services/deliveriesService";
+import DeliveryFilter from "@/components/DeliveryFilter";
 
 export default function DeliveriesPage() {
   const deliveries = getAllDeliveries();
 
   return (
     <>
-      <h1>All Deliveries</h1>
+      <h2>All Deliveries</h2>
+      <DeliveryFilter deliveries={deliveries} />
       <ol>
         {deliveries.map((delivery) => (
           <li key={delivery.id}>

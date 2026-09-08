@@ -1,10 +1,15 @@
+import Link from "next/link";
 import { getDeliveryById } from "@/lib/services/deliveriesService";
+
 export default function HomePage() {
   const firstDelivery = getDeliveryById("1");
   return (
     <>
-      <p>Fast, reliable deliveries across the city.</p>
+      <h2>Fast, reliable deliveries across the city.</h2>
       {firstDelivery!.pickup} to {firstDelivery!.destination}
+      <p>
+        <Link href="/deliveries">Show all deliveries</Link>
+      </p>
     </>
   );
 }
