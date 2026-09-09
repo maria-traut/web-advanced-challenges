@@ -1,3 +1,4 @@
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getDeliveryById } from "@/lib/services/deliveriesService";
 import Link from "next/link";
 export default async function DeliveryDetailPage({
@@ -14,10 +15,14 @@ export default async function DeliveryDetailPage({
     <>
       <Link href="/deliveries">&#8592; Show all deliveries</Link>
       <h2>Delivery {id}</h2>
-      <p>
-        From {delivery.pickup} to {delivery.destination}
-      </p>
-      <p>Status: {delivery.status}</p>
+      <Card>
+        <CardHeader>
+          <CardTitle>
+            From {delivery.pickup} to {delivery.destination}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>Status: {delivery.status}</CardContent>
+      </Card>
     </>
   );
 }

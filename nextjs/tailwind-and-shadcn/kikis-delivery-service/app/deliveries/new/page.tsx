@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { addDelivery } from "@/app/actions";
 
@@ -15,7 +16,7 @@ export default function NewDeliveryPage() {
           placeholder="Destination"
           required
         />
-        <button type="submit">Create request</button>
+        <Button type="submit">Create request</Button>
       </form>
     </>
   );

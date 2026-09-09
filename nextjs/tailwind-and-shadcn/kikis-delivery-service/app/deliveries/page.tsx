@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { getAllDeliveries } from "@/lib/services/deliveriesService";
 import DeliveryFilter from "@/components/DeliveryFilter";
 
@@ -13,7 +14,9 @@ export default async function DeliveriesPage() {
         <Link href="/">Homepage</Link>
       </p>
       <p>
-        <Link href="/deliveries/new">+ Add Delivery</Link>
+        <Button asChild>
+          <Link href="/deliveries/new">+ Add Delivery</Link>
+        </Button>
       </p>
     </>
   );
