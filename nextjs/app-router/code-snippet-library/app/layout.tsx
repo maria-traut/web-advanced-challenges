@@ -18,7 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.violet.min.css"
+        ></link>
         <style>{`
           body {
             font-family: var(--font-inter);
@@ -31,7 +35,12 @@ export default function RootLayout({
             font-family: var(--font-jetbrains-mono);
           }
         `}</style>
-        {children}
+      </head>
+      <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+        <header>
+          <h1>Code Snippet Library</h1>
+        </header>
+        <main className="container"> {children}</main>
       </body>
     </html>
   );

@@ -13,7 +13,7 @@ export default async function ({ params }: PageProps<"/snippets/[id]">) {
       <Link href={"/"}>Homepage</Link>
       <Link href="/snippets">&#8592; Show all snippets</Link>
       <h2>{snippet.title}</h2>
-      <p>Language: {snippet.language}</p>
+      <p>{snippet.language}</p>
       <p>{snippet.description}</p>
       <pre>
         <code>{snippet.code}</code>

@@ -12,7 +12,7 @@ export default async function SnippetsPage() {
           <h3>
             <Link href={`/snippets/${snippet.id}`}>{snippet.title}</Link>
           </h3>
-          <p>Language: {snippet.language}</p>
+          <p>{snippet.language}</p>
           <p>{snippet.description}</p>
           <pre>
             <code>{snippet.code}</code>
