@@ -2,8 +2,8 @@ import Link from "next/link";
 import { getAllDeliveries } from "@/lib/services/deliveriesService";
 import DeliveryFilter from "@/components/DeliveryFilter";
 
-export default function DeliveriesPage() {
-  const deliveries = getAllDeliveries();
+export default async function DeliveriesPage() {
+  const deliveries = await getAllDeliveries();
 
   return (
     <>
@@ -15,15 +15,6 @@ export default function DeliveriesPage() {
       <p>
         <Link href="/deliveries/new">+ Add Delivery</Link>
       </p>
-      <ol>
-        {deliveries.map((delivery) => (
-          <li key={delivery.id}>
-            <Link href={`/deliveries/${delivery.id}`}>
-              {delivery.pickup} to {delivery.destination} ({delivery.status})
-            </Link>
-          </li>
-        ))}
-      </ol>
     </>
   );
 }

@@ -1,3 +1,5 @@
+import sql from "@/lib/db";
+
 export type DeliveryStatus = "active" | "accepted" | "denied" | "fulfilled";
 
 export type DeliveryRequest = {
@@ -24,25 +26,26 @@ export const deliveries: DeliveryRequest[] = [
   },
 ];
 
-export function getAllDeliveries(): DeliveryRequest[] {
-  return deliveries;
+export async function getAllDeliveries(): Promise<DeliveryRequest[]> {
+  return sql<DeliveryRequest[]>`SELECT * FROM deliveries`;
 }
 
-export function getDeliveryById(id: string): DeliveryRequest | null {
-  return deliveries.find((d) => d.id === id) || null;
+export async function getDeliveryById(
+  id: string,
+): Promise<DeliveryRequest | null> {
+  const [delivery] = await sql<DeliveryRequest[]>`
+    SELECT * FROM deliveries WHERE id = ${id}
+  `;
+  return delivery ?? null;
 }
 
-export function createDelivery(
-  pickup: string,
-  destination: string,
-): DeliveryRequest {
-  const newDelivery: DeliveryRequest = {
-    id: crypto.randomUUID(),
-    pickup,
-    destination,
-    status: "active",
-  };
-
-  deliveries.push(newDelivery);
-  return newDelivery;
+export async function createDelivery(
+  delivery: Pick<DeliveryRequest, "pickup" | "destination">,
+): Promise<DeliveryRequest> {
+  const [created] = await sql<DeliveryRequest[]>`
+    INSERT INTO deliveries (pickup, destination, status)
+    VALUES (${delivery.pickup}, ${delivery.destination}, 'active')
+    RETURNING *
+  `;
+  return created;
 }

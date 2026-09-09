@@ -1,12 +1,14 @@
 import Link from "next/link";
-import { getDeliveryById } from "@/lib/services/deliveriesService";
+import { getAllDeliveries } from "@/lib/services/deliveriesService";
 
-export default function HomePage() {
-  const firstDelivery = getDeliveryById("1");
+export default async function HomePage() {
+  const deliveries = await getAllDeliveries();
+  const firstDelivery = deliveries[0];
+
   return (
     <>
       <h2>Fast, reliable deliveries across the city.</h2>
-      {firstDelivery!.pickup} to {firstDelivery!.destination}
+      {firstDelivery.pickup} to {firstDelivery.destination}
       <p>
         <Link href="/deliveries">Show all deliveries</Link>
       </p>
