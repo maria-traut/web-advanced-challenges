@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { getAllDeliveries } from "@/lib/services/deliveriesService";
 
@@ -11,12 +12,12 @@ export default async function HomePage() {
         Fast, reliable deliveries across the city.
       </h2>
       {firstDelivery.pickup} to {firstDelivery.destination}
-      <p>
+      <Button asChild>
         <Link href="/deliveries">Show all deliveries</Link>
-      </p>
-      <p>
+      </Button>
+      <Button asChild>
         <Link href="/deliveries/new">+ Add Delivery</Link>
-      </p>
+      </Button>
     </>
   );
 }

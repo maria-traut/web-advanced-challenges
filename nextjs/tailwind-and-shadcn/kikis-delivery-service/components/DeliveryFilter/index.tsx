@@ -1,5 +1,12 @@
 "use client";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import Link from "next/link";
 import { DeliveryRequest } from "@/lib/services/deliveriesService";
@@ -18,15 +25,18 @@ export default function DeliveryFilter({
 
   return (
     <>
-      <select
-        value={status}
-        onChange={(event) => setStatus(event.target.value)}
-      >
-        <option value="all">All</option>
-        <option value="active">Active</option>
-        <option value="accepted">Accepted</option>
-        <option value="fulfilled">Fulfilled</option>
-      </select>
+      <Select value={status} onValueChange={setStatus}>
+        <SelectTrigger>
+          <SelectValue placeholder="Filter by status" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">All</SelectItem>
+          <SelectItem value="active">Active</SelectItem>
+          <SelectItem value="accepted">Accepted</SelectItem>
+          <SelectItem value="fulfilled">Fulfilled</SelectItem>
+          <SelectItem value="denied">Denied</SelectItem>
+        </SelectContent>
+      </Select>
       <ul>
         {visible.map((delivery) => (
           <li key={delivery.id}>

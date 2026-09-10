@@ -10,14 +10,13 @@ export default async function DeliveriesPage() {
     <>
       <h2 className="text-3xl text-red-500">All Deliveries</h2>
       <DeliveryFilter deliveries={deliveries} />
-      <p>
+      <Button asChild>
         <Link href="/">Homepage</Link>
-      </p>
-      <p>
-        <Button asChild>
-          <Link href="/deliveries/new">+ Add Delivery</Link>
-        </Button>
-      </p>
+      </Button>
+
+      <Button asChild>
+        <Link href="/deliveries/new">+ New Delivery</Link>
+      </Button>
     </>
   );
 }
