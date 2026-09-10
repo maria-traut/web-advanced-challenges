@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { createSnippet } from "@/lib/services/snippetsService";
 import { useRouter } from "next/navigation";
 import { addSnippetFromForm } from "@/app/actions";
 
