@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import Link from "next/link";
 import { DeliveryRequest } from "@/lib/services/deliveriesService";
+import DeleteDeliveryForm from "../DeleteDeliveryForm";
 
 export default function DeliveryFilter({
   deliveries,
@@ -39,10 +40,11 @@ export default function DeliveryFilter({
       </Select>
       <ul>
         {visible.map((delivery) => (
-          <li key={delivery.id}>
+          <li key={delivery.id} className="flex items-center gap-2">
             <Link href={`/deliveries/${delivery.id}`}>
               {delivery.pickup} to {delivery.destination} ({delivery.status})
             </Link>
+            <DeleteDeliveryForm id={delivery.id} />
           </li>
         ))}
       </ul>

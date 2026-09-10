@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Cherry_Bomb_One, Figtree } from "next/font/google";
 import { cn } from "@/lib/utils";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import NavBar from "@/components/NavBar";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-sans" });

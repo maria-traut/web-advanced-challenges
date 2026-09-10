@@ -49,3 +49,7 @@ export async function createDelivery(
   `;
   return created;
 }
+
+export async function deleteDelivery(id: string): Promise<void> {
+  await sql`DELETE FROM deliveries WHERE id = ${id}`;
+}

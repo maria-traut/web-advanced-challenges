@@ -1,7 +1,10 @@
 "use server";
 
-import { createDelivery } from "@/lib/services/deliveriesService";
-import { revalidatePath } from "next/cache";
+import {
+  createDelivery,
+  deleteDelivery,
+} from "@/lib/services/deliveriesService";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function addDelivery(formData: FormData) {
   "use server";
@@ -9,5 +12,11 @@ export async function addDelivery(formData: FormData) {
   const destination = formData.get("destination") as string;
 
   await createDelivery({ pickup, destination });
+  revalidatePath("/deliveries");
+}
+
+export async function removeDelivery(formData: FormData) {
+  const id = formData.get("id") as string;
+  await deleteDelivery(id);
   revalidatePath("/deliveries");
 }
