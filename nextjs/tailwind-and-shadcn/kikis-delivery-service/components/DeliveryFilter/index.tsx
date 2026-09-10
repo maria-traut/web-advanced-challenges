@@ -24,7 +24,7 @@ export default function DeliveryFilter({
       : deliveries.filter((delivery) => delivery.status === status);
 
   return (
-    <>
+    <div className="my-5">
       <Select value={status} onValueChange={setStatus}>
         <SelectTrigger>
           <SelectValue placeholder="Filter by status" />
@@ -46,6 +46,6 @@ export default function DeliveryFilter({
           </li>
         ))}
       </ul>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getDeliveryById } from "@/lib/services/deliveriesService";
-import Link from "next/link";
+
 export default async function DeliveryDetailPage({
   params,
 }: PageProps<"/deliveries/[id]">) {
@@ -13,7 +13,6 @@ export default async function DeliveryDetailPage({
 
   return (
     <>
-      <Link href="/deliveries">&#8592; Show all deliveries</Link>
       <h2>Delivery {id}</h2>
       <Card>
         <CardHeader>
