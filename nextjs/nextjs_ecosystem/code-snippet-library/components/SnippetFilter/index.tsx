@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Snippet } from "@/lib/services/snippetsService";
+import DeleteSnippetForm from "../DeleteSnippetForm";
 
 export default function SnippetFilter({ snippets }: { snippets: Snippet[] }) {
   const [language, setLanguage] = useState("all");
@@ -27,8 +28,12 @@ export default function SnippetFilter({ snippets }: { snippets: Snippet[] }) {
         {visible.map((snippet) => (
           <li key={snippet.id}>
             <Link href={`/snippets/${snippet.id}`}>
-              {snippet.title}: {snippet.description} ({snippet.language})
+              <h2>
+                {snippet.title} ({snippet.language})
+              </h2>
+              <p>{snippet.description}</p>
             </Link>
+            <DeleteSnippetForm id={snippet.id} />
           </li>
         ))}
       </ul>

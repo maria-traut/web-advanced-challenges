@@ -29,3 +29,7 @@ export async function createSnippet(
     RETURNING *`;
   return created;
 }
+
+export async function deleteSnippet(id: string): Promise<void> {
+  await sql`DELETE FROM snippets WHERE id = ${id}`;
+}
