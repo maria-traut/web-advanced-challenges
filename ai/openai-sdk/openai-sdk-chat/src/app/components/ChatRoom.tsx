@@ -5,6 +5,7 @@ import type { TChat, TMessage } from "../types";
 import Chat from "./Chat";
 import useLocalStorageState from "use-local-storage-state";
 import Sidebar from "./Sidebar";
+import { createStory } from "../actions";
 
 export default function ChatApp() {
   const [chats, setChats] = useLocalStorageState<TChat[]>("chats", {
@@ -14,10 +15,13 @@ export default function ChatApp() {
 
   const activeChat = chats.find((chat) => chat.id === activeChatId);
 
-  function handleNewChat() {
+  async function handleNewChat() {
+    const story = await createStory("New Chat");
+
     const newChat: TChat = {
       id: crypto.randomUUID(),
-      title: "New Chat",
+      storyId: story.id,
+      title: story.title,
       messages: [],
       followups: [],
     };

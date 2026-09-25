@@ -26,7 +26,10 @@ export default function Chat({
     // setFollowups([]);
 
     // const { reply, followups } = await sendChat(updatedMessages);
-    const { story, options, ended } = await sendChat(updatedMessages);
+    const { story, options, ended } = await sendChat(
+      chat.storyId,
+      updatedMessages,
+    );
     onUpdateMessages(chat.id, [
       ...updatedMessages,
       { role: "assistant", content: story },
@@ -65,7 +68,10 @@ export default function Chat({
     ];
     onUpdateMessages(chat.id, updatedMessages);
     setFollowups([]);
-    const { story, options, ended } = await sendChat(updatedMessages);
+    const { story, options, ended } = await sendChat(
+      chat.storyId,
+      updatedMessages,
+    );
     onUpdateMessages(chat.id, [
       ...updatedMessages,
       { role: "assistant", content: story },

@@ -2,6 +2,7 @@
 
 import type { TMessage } from "./types";
 import openai from "@/lib/openai";
+import { sql } from "@/lib/db";
 
 // System prompt is prepended to every request, independent of the chat history in the client
 // const systemPrompt = `You are a chef specializing in simple vegan recipes, written in flowery language. Answer the user's question clearly and briefly. Always suggest two or three follow-up questions the user might find useful.`;
@@ -13,11 +14,24 @@ Rules:
 - Continue the story based only on the choice the player makes.
 - End the adventure when the player reaches a natural conclusion or makes a fatal choice.`;
 
-export async function sendChat(messages: TMessage[]) {
+export async function sendChat(storyId: number, messages: TMessage[]) {
+  const lastMessage = messages[messages.length - 1];
+
+  if (lastMessage?.role === "user") {
+    await addMessage(storyId, "user", lastMessage.content);
+  }
+  const storedMessages = await getMessages(storyId);
+
+  const chatMessages = storedMessages.map((message) => ({
+    role: message.role as TMessage["role"],
+    content: message.content,
+  }));
+
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
-    messages: [{ role: "system", content: systemPrompt }, ...messages],
+    messages: [{ role: "system", content: systemPrompt }, ...chatMessages],
     temperature: 0.5,
+    max_tokens: 300,
 
     response_format: {
       type: "json_schema",
@@ -38,15 +52,59 @@ export async function sendChat(messages: TMessage[]) {
     },
   });
 
-  const raw = completion.choices[0].message.content ?? "{}";
-  console.log("RAW RESPONSE:", raw);
-  console.log("FINISH REASON:", completion.choices[0].finish_reason);
-  const reply = JSON.parse(raw) as {
-    story: string;
-    options: string[];
-    ended: boolean;
-  };
-  return reply;
+  // const raw = completion.choices[0].message.content ?? "{}";
+  const raw = completion.choices[0].message.content;
+
+  if (!raw) {
+    throw new Error("OpenAI returned an empty response");
+  }
+
+  const result = JSON.parse(raw);
+
+  await addMessage(storyId, "assistant", result.story);
+
+  return result;
+}
+
+export async function createStory(title: string) {
+  const [story] = await sql`
+  INSERT INTO stories (title)
+  VALUES (${title})
+  RETURNING *
+  `;
+
+  return story;
+}
+
+export async function addMessage(
+  storyId: number,
+  role: string,
+  content: string,
+) {
+  const [message] = await sql`
+  INSERT INTO messages (story_id, role, content)
+    VALUES (${storyId}, ${role}, ${content})
+    RETURNING *
+  `;
+
+  return message;
+}
+
+export async function getMessages(storyId: number) {
+  return await sql`
+   SELECT *
+    FROM messages
+    WHERE story_id = ${storyId}
+    ORDER BY id ASC
+  `;
+}
+
+export async function getStories() {
+  return await sql`
+  SELECT *
+  FROM stories
+  ORDER BY created DESC
+  `;
 }
 
 // -- custom chat api --

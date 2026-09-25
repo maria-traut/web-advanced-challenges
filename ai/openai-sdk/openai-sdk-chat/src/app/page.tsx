@@ -1,4 +1,4 @@
-import ChatApp from "./components/ChatApp";
+import ChatApp from "./components/ChatRoom";
 
 export default function Home() {
   return (
