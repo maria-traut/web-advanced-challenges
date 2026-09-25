@@ -4,13 +4,9 @@ import type { TMessage } from "./types";
 import openai from "@/lib/openai";
 import { sql } from "@/lib/db";
 
-// System prompt is prepended to every request, independent of the chat history in the client
-// const systemPrompt = `You are a chef specializing in simple vegan recipes, written in flowery language. Answer the user's question clearly and briefly. Always suggest two or three follow-up questions the user might find useful.`;
 const systemPrompt = `You are the game master of an interactive text adventure.
-
 Rules:
 - Narrate in the second person ("you"), in vivid but short paragraphs.
-
 - Continue the story based only on the choice the player makes.
 - End the adventure when the player reaches a natural conclusion or makes a fatal choice.`;
 
@@ -52,7 +48,6 @@ export async function sendChat(storyId: number, messages: TMessage[]) {
     },
   });
 
-  // const raw = completion.choices[0].message.content ?? "{}";
   const raw = completion.choices[0].message.content;
 
   if (!raw) {
