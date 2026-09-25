@@ -20,8 +20,26 @@ export default function Chat({
     onUpdateMessages(chat.id, updatedMessages);
     setInput("");
 
-    const assistantMessage = await sendChat(updatedMessages);
-    onUpdateMessages(chat.id, [...updatedMessages, assistantMessage]);
+    // placeholder for assistant for growing assistant response
+    let assistantContent = "";
+    onUpdateMessages(chat.id, [
+      ...updatedMessages,
+      { role: "assistant", content: "" },
+    ]);
+
+    const stream = await sendChat(updatedMessages);
+    const reader = stream.getReader();
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+
+      assistantContent += value;
+      onUpdateMessages(chat.id, [
+        ...updatedMessages,
+        { role: "assistant", content: assistantContent },
+      ]);
+    }
   }
 
   return (
@@ -87,7 +105,8 @@ export default function Chat({
             strokeLinejoin="round"
             className="w-5 h-5"
           >
-            <path d="M12 19V5M6 11l6-6 6 6" />
+            <path d="M22 2 11 13" />
+            <path d="M22 2 15 22l-4-9-9-4 20-7Z" />
           </svg>
         </button>
       </form>

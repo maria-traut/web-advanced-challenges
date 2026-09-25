@@ -16,16 +16,44 @@ export async function sendChat(messages: TMessage[]) {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages,
+        stream: true,
       }),
     },
   );
 
-  const data = await openaiResponse.json();
+  return new ReadableStream({
+    async start(controller) {
+      const reader = openaiResponse.body!.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
 
-  if (!openaiResponse.ok || !data.choices) {
-    console.error("OpenAI API error:", data);
-    throw new Error(data.error?.message ?? "Unknown error from OpenAI API");
-  }
+      while (true) {
+        const { value, done } = await reader.read();
+        if (done) break;
 
-  return data.choices[0].message;
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data:")) continue;
+          const data = line.replace("data:", "").trim();
+          if (data === "[DONE]") continue;
+
+          const token = JSON.parse(data).choices[0].delta.content;
+          if (token) controller.enqueue(token);
+        }
+      }
+      controller.close();
+    },
+  });
+
+  // const data = await openaiResponse.json();
+
+  // if (!openaiResponse.ok || !data.choices) {
+  //   console.error("OpenAI API error:", data);
+  //   throw new Error(data.error?.message ?? "Unknown error from OpenAI API");
+  // }
+
+  // return data.choices[0].message;
 }
