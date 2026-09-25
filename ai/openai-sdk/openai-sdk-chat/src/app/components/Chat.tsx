@@ -23,9 +23,7 @@ export default function Chat({
     ];
     onUpdateMessages(chat.id, updatedMessages);
     setInput("");
-    // setFollowups([]);
 
-    // const { reply, followups } = await sendChat(updatedMessages);
     const { story, options, ended } = await sendChat(
       chat.storyId,
       updatedMessages,
@@ -34,31 +32,7 @@ export default function Chat({
       ...updatedMessages,
       { role: "assistant", content: story },
     ]);
-    // setFollowups(followups);
     setFollowups(ended ? [] : options);
-
-    // -- streaming --
-    // placeholder for assistant for growing assistant response
-
-    // let assistantContent = "";
-    // onUpdateMessages(chat.id, [
-    //   ...updatedMessages,
-    //   { role: "assistant", content: "" },
-    // ]);
-
-    // const stream = await sendChat(updatedMessages);
-    // const reader = stream.getReader();
-
-    // while (true) {
-    //   const { value, done } = await reader.read();
-    //   if (done) break;
-
-    //   assistantContent += value;
-    //   onUpdateMessages(chat.id, [
-    //     ...updatedMessages,
-    //     { role: "assistant", content: assistantContent },
-    //   ]);
-    // }
   }
 
   async function handleFollowupClick(option: string) {
@@ -76,7 +50,7 @@ export default function Chat({
       ...updatedMessages,
       { role: "assistant", content: story },
     ]);
-    // setFollowups(newFollowups);
+
     setFollowups(ended ? [] : options);
   }
 
@@ -122,7 +96,7 @@ export default function Chat({
       </ul>
 
       {followups.length > 0 && (
-        <div className="flex flex-wrap px-4 gap-4">
+        <div className="flex flex-col items-end px-4 gap-4">
           {followups.map((followup, index) => (
             <button
               key={index}
@@ -172,3 +146,26 @@ export default function Chat({
     </div>
   );
 }
+
+// -- streaming (inside handleSubmit)--
+// placeholder for assistant for growing assistant response
+
+// let assistantContent = "";
+// onUpdateMessages(chat.id, [
+//   ...updatedMessages,
+//   { role: "assistant", content: "" },
+// ]);
+
+// const stream = await sendChat(updatedMessages);
+// const reader = stream.getReader();
+
+// while (true) {
+//   const { value, done } = await reader.read();
+//   if (done) break;
+
+//   assistantContent += value;
+//   onUpdateMessages(chat.id, [
+//     ...updatedMessages,
+//     { role: "assistant", content: assistantContent },
+//   ]);
+// }
