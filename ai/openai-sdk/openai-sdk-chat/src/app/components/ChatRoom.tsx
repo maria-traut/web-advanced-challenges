@@ -5,7 +5,7 @@ import type { TChat, TMessage } from "../types";
 import Chat from "./Chat";
 import useLocalStorageState from "use-local-storage-state";
 import Sidebar from "./Sidebar";
-import { createStory } from "../actions";
+import { createStory, deleteStory } from "../actions";
 
 export default function ChatApp() {
   const [chats, setChats] = useLocalStorageState<TChat[]>("chats", {
@@ -58,8 +58,14 @@ export default function ChatApp() {
     );
   }
 
-  function handleDeleteChat(chatId: string) {
-    setChats(chats.filter((chat) => chatId !== chat.id));
+  async function handleDeleteChat(chatId: string) {
+    const chatToDelete = chats.find((chat) => chat.id === chatId);
+    if (chatToDelete) {
+      await deleteStory(chatToDelete.storyId);
+    }
+    setChats((previousChats) =>
+      previousChats.filter((chat) => chatId !== chat.id),
+    );
   }
 
   return (

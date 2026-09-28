@@ -24,5 +24,5 @@ export type TChatProps = {
     messages: TMessage[],
     followups?: string[],
   ) => void;
-  onDeleteChat: (id: string) => void;
+  onDeleteChat: (id: string) => void | Promise<void>;
 };

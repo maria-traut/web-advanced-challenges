@@ -71,6 +71,14 @@ export async function createStory(title: string) {
   return story;
 }
 
+export async function deleteStory(storyId: number) {
+  // messages are removed via ON DELETE CASCADE
+  await sql`
+  DELETE FROM stories
+  WHERE id = ${storyId}
+  `;
+}
+
 export async function addMessage(
   storyId: number,
   role: string,
