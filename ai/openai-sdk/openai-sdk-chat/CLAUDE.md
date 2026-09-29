@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-A bootcamp exercise: an AI-driven **text adventure** chat app built on Next.js 16 (App Router, React 19, Tailwind v4), the `openai` SDK, and Postgres (via the `postgres` / porsager client). There is no test suite.
+A bootcamp exercise: an AI-driven **text adventure** chat app built on Next.js 16 (App Router, React 19, Tailwind v4), the `openai` SDK, and Postgres (via the `postgres` / porsager client).
 
 ## Commands
 

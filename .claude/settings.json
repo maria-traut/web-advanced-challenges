@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit | Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date): wrote $CLAUDE_TOOL_INPUT_FILE_PATH\" >> claude-edits.log"
+          }
+        ]
+      }
+    ]
+  }
+}
