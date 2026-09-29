@@ -1,12 +1,26 @@
 {
   "hooks": {
-    "PostToolUse": [
+    "PreToolUse": [
       {
-        "matcher": "Edit | Write",
+        "matcher": "Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "echo \"$(date): wrote $CLAUDE_TOOL_INPUT_FILE_PATH\" >> claude-edits.log"
+            "if": "Bash(git commit *)",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\"; npm run lint > /tmp/claude-lint-output.txt 2>&1; code=$?; if [ $code -ne 0 ]; then out=$(cat /tmp/claude-lint-output.txt); jq -n --arg out \"$out\" '{hookSpecificOutput: {hookEventName: \"PreToolUse\", permissionDecision: \"deny\", permissionDecisionReason: (\"Lint failed, commit blocked:\\n\" + $out)}}'; exit 2; fi",
+            "timeout": 120,
+            "statusMessage": "Running npm run lint before commit..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$(date): wrote $(jq -r '.tool_input.file_path' | sed 's|.*/web-advanced-bootcamp/|web-advanced-bootcamp/|')\" >> \"$CLAUDE_PROJECT_DIR/claude-edits.log\""
           }
         ]
       }
