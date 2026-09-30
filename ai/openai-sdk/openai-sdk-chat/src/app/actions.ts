@@ -3,7 +3,7 @@
 import type { TMessage } from "./types";
 import openai from "@/lib/openai";
 import { sql } from "@/lib/db";
-import { addMessage } from "@/lib/stories";
+import { saveTurn } from "@/lib/stories";
 
 const systemPrompt = `You are the game master of an interactive text adventure.
 Rules:
@@ -13,16 +13,20 @@ Rules:
 
 export async function sendChat(storyId: number, messages: TMessage[]) {
   const lastMessage = messages[messages.length - 1];
+  const userContent =
+    lastMessage?.role === "user" ? lastMessage.content : undefined;
 
-  if (lastMessage?.role === "user") {
-    await addMessage(storyId, "user", lastMessage.content);
-  }
   const storedMessages = await getMessages(storyId);
 
   const chatMessages = storedMessages.map((message) => ({
     role: message.role as TMessage["role"],
     content: message.content,
   }));
+
+  // the new user message is only kept in memory until the reply is valid
+  if (userContent !== undefined) {
+    chatMessages.push({ role: "user", content: userContent });
+  }
 
   const completion = await openai.chat.completions.create({
     model: "gpt-4o-mini",
@@ -57,7 +61,7 @@ export async function sendChat(storyId: number, messages: TMessage[]) {
 
   const result = JSON.parse(raw);
 
-  await addMessage(storyId, "assistant", result.story);
+  await saveTurn(storyId, userContent, result.story);
 
   return result;
 }
