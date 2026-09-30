@@ -3,6 +3,7 @@
 import type { TMessage } from "./types";
 import openai from "@/lib/openai";
 import { sql } from "@/lib/db";
+import { addMessage } from "@/lib/stories";
 
 const systemPrompt = `You are the game master of an interactive text adventure.
 Rules:
@@ -77,20 +78,6 @@ export async function deleteStory(storyId: number) {
   DELETE FROM stories
   WHERE id = ${storyId}
   `;
-}
-
-export async function addMessage(
-  storyId: number,
-  role: string,
-  content: string,
-) {
-  const [message] = await sql`
-  INSERT INTO messages (story_id, role, content)
-    VALUES (${storyId}, ${role}, ${content})
-    RETURNING *
-  `;
-
-  return message;
 }
 
 export async function getMessages(storyId: number) {

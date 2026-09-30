@@ -1,6 +1,6 @@
 export type TMessage = { role: TRole; content: string };
 
-export type TRole = "user" | "assistant" | "system";
+export type TRole = "user" | "assistant";
 
 export type TChat = {
   id: string;
