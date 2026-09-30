@@ -1,6 +1,6 @@
 "use server";
 
-import type { TMessage } from "./types";
+import type { TMessage, TRenameStoryResult, TStory } from "./types";
 import openai from "@/lib/openai";
 import { sql } from "@/lib/db";
 import { saveTurn } from "@/lib/stories";
@@ -82,6 +82,17 @@ export async function deleteStory(storyId: number) {
   DELETE FROM stories
   WHERE id = ${storyId}
   `;
+}
+
+export async function renameStory(
+  storyId: number,
+  title: string,
+): Promise<TRenameStoryResult> {
+  const trimmedTitle = title.trim();
+  if (!trimmedTitle) return { ok: false, error: "Title must not be empty" };
+  const [story] = await sql`UPDATE stories SET title = ${trimmedTitle} WHERE id = ${storyId} RETURNING *`;
+  if (!story) return { ok: false, error: "Story not found" };
+  return { ok: true, story: story as TStory };
 }
 
 export async function getMessages(storyId: number) {

@@ -5,7 +5,7 @@ import type { TChat, TMessage } from "../types";
 import Chat from "./Chat";
 import useLocalStorageState from "use-local-storage-state";
 import Sidebar from "./Sidebar";
-import { createStory, deleteStory } from "../actions";
+import { createStory, deleteStory, renameStory } from "../actions";
 
 export default function ChatApp() {
   const [chats, setChats] = useLocalStorageState<TChat[]>("chats", {
@@ -68,6 +68,18 @@ export default function ChatApp() {
     );
   }
 
+  async function handleRenameChat(chatId: string, title: string) {
+    const chatToRename = chats.find((chat) => chat.id === chatId);
+    if (!chatToRename) return;
+    const result = await renameStory(chatToRename.storyId, title);
+    if (!result.ok) return;
+    setChats((previousChats) =>
+      previousChats.map((chat) =>
+        chat.id === chatId ? { ...chat, title: result.story.title } : chat,
+      ),
+    );
+  }
+
   return (
     <div className="flex h-screen">
       <Sidebar
@@ -75,6 +87,7 @@ export default function ChatApp() {
         activeChatId={activeChatId}
         onSelectChat={setActiveChatId}
         onNewChat={handleNewChat}
+        onRenameChat={handleRenameChat}
       />
       <div className="flex-1">
         {activeChat ? (

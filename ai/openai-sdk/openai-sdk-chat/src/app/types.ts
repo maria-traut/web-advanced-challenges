@@ -10,11 +10,18 @@ export type TChat = {
   followups: string[];
 };
 
+export type TStory = { id: number; title: string; created: Date };
+
+export type TRenameStoryResult =
+  | { ok: true; story: TStory }
+  | { ok: false; error: string };
+
 export type TSidebarProps = {
   chats: TChat[];
   activeChatId: string | null;
   onSelectChat: (id: string) => void;
   onNewChat: () => void | Promise<void>;
+  onRenameChat: (chatId: string, title: string) => Promise<void>;
 };
 
 export type TChatProps = {
